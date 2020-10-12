@@ -19,14 +19,13 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
         self._group_names = data_container.get_group_names()
         self._subject_names = data_container.get_subject_names()
 
-
     def data(self, index, role):
         if role == Qt.DisplayRole:
             # See below for the nested-list data structure.
             # .row() indexes into the outer list,
             # .column() indexes into the sub-list
             if index.row() == 0:
-                return self._subject_names[index.column()//len(self._group_names)]
+                return self._subject_names[index.column() // len(self._group_names)]
             elif index.row() == 1:
                 return self._group_names[index.column() % len(self._group_names)]
             else:
@@ -34,7 +33,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                     return "X"
             return ""
         if role == Qt.BackgroundRole:
-            second_col = (index.column()//len(self._group_names)) % 2
+            second_col = (index.column() // len(self._group_names)) % 2
             if index.row() == 1:
                 if second_col:
                     return QtGui.QColor("#9da1fc")
@@ -49,7 +48,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                         return QtGui.QColor("#d95f5f")
                     else:
                         return QtGui.QColor("#ff7070")
-                elif value ==3:
+                elif value == 3:
                     if second_col:
                         return QtGui.QColor("#d4c23d")
                     else:
@@ -72,7 +71,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role):
         # section is the index of the column/row.
         if role == Qt.DisplayRole:
-            #if orientation == Qt.Horizontal:
+            # if orientation == Qt.Horizontal:
             #    return str(self._data.columns[section])
 
             if orientation == Qt.Vertical:
@@ -92,7 +91,7 @@ class ColoredMappingTableView(QTableView):
         self._num_courses = data_container.num_cources
         self._num_teachers = data_container.num_teacher
         for i in range(self._num_courses // self._num_groups):
-            self.setSpan(0,i*self._num_groups,1,self._num_groups)
+            self.setSpan(0, i * self._num_groups, 1, self._num_groups)
 
     def ajust_size(self):
         for i in range(self._num_courses):
@@ -124,6 +123,6 @@ if __name__ == "__main__":
     printer.printGroups(container)
 
     app = QtWidgets.QApplication(sys.argv)
-    window = SolutionWindow(Solution(np.random.randint(0, 2, (18*10*3)), container), container)
+    window = SolutionWindow(Solution(np.random.randint(0, 2, (18 * 10 * 3)), container), container)
     window.show()
     app.exec_()
