@@ -1,5 +1,6 @@
 from typing import List
 
+
 class Teacher:
     def __init__(self, container, name, short_name, preferences, max_lessons):
         self.name: str = name
@@ -17,5 +18,6 @@ class Teacher:
                     if subject is not None:
                         subjects.append(subject)
                     else:
-                        raise ValueError(f"{self.name} has a preference > 0 for class {i}_{j}. But this subject does not exist in this class configuration!")
+                        raise ValueError(
+                            f"{self.name} has a preference > 0 for class {i}_{j}. But this subject does not exist in this class configuration!")
         return subjects

@@ -17,7 +17,7 @@ class ConsolePrinter:
     @staticmethod
     def printGroups(container: DataContainer):
         table = Texttable()
-        table.header(["ID","Type", "Groupname"])
+        table.header(["ID", "Type", "Groupname"])
         for i, group in enumerate(container.groups):
             table.add_row([i, group.group_type.name, group.name])
         print(table.draw())
