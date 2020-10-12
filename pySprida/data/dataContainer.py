@@ -96,6 +96,10 @@ class DataContainer:
     def num_cources(self):
         return len(self.subject_types) * len(self.groups)
 
+    @property
+    def num_groups(self):
+        return len(self.groups)
+
     def get_preference_matrix(self):
         preferences = np.zeros((self.num_teacher, self.num_cources))
         for i, teacher in enumerate(self.teachers):
@@ -104,6 +108,12 @@ class DataContainer:
 
     def get_teacher_names(self):
         return [teacher.name for teacher in self.teachers]
+
+    def get_group_names(self):
+        return [group.name for group in self.groups]
+
+    def get_subject_names(self):
+        return [subject.name for subject in self.subject_types]
 
 
 if __name__ == "__main__":
