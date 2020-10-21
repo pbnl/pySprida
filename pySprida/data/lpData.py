@@ -4,6 +4,7 @@ from pathlib import Path
 from pySprida.data.dataContainer import DataContainer
 import numpy as np
 
+
 class LPData:
 
     def __init__(self, data_container: DataContainer):
