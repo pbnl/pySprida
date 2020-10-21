@@ -37,4 +37,4 @@ class LPSolver(Solver):
         # set target
         m.objective = mip.minimize(mip.xsum(c[i] * x[i] for i in range(n)))
 
-        return Solution(np.random.randint(0, 2, (18 * 10 * 3)), self.data_container)
+        return Solution(np.random.randint(0, 2, (15 * 11 * 3)), self.data_container)

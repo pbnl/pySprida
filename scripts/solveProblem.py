@@ -1,12 +1,10 @@
 import logging
 import sys
 from pathlib import Path
-
-from PyQt5.uic.properties import QtWidgets
+from PyQt5 import QtWidgets
 
 from pySprida.data.dataContainer import DataContainer
 from pySprida.data.lpData import LPData
-from pySprida.data.solution import Solution
 from pySprida.gui.solution_window import SolutionWindow
 from pySprida.solver.lpSolver import LPSolver
 

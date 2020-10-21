@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableView
+from PyQt5.QtWidgets import QTableView, QDesktopWidget
 
 from pySprida.data.dataContainer import DataContainer
 from pySprida.data.solution import Solution
@@ -111,6 +111,12 @@ class SolutionWindow(QtWidgets.QMainWindow):
 
         self.setCentralWidget(self.table)
 
+        dw = QDesktopWidget()
+        x = int(dw.width() * 0.7)
+        y = int(dw.height() * 0.7)
+        self.resize(x, y)
+        self.setWindowTitle("PySprida-Solution")
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
@@ -123,6 +129,6 @@ if __name__ == "__main__":
     printer.printGroups(container)
 
     app = QtWidgets.QApplication(sys.argv)
-    window = SolutionWindow(Solution(np.random.randint(0, 2, (18 * 10 * 3)), container), container)
+    window = SolutionWindow(Solution(np.random.randint(0, 2, (15 * 11 * 3)), container), container)
     window.show()
     app.exec_()
