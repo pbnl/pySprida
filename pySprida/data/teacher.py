@@ -2,12 +2,14 @@ from typing import List
 
 
 class Teacher:
-    def __init__(self, container, name, short_name, preferences, max_lessons):
+    def __init__(self, container, name, short_name, preferences, max_lessons, woman, co_ref):
         self.name: str = name
         self.short_name: str = short_name
         self.preferences: List[int] = preferences
         self.max_lessons: int = max_lessons
         self.container = container
+        self.woman = woman
+        self.co_ref = co_ref
 
     def get_subject_preferences(self, min_preference=1):
         subjects = []

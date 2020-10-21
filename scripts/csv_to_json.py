@@ -8,12 +8,13 @@ import pandas as pd
 
 final_config = {"config": {}}
 
-csv_path = r"C:\Users\Paul\Downloads\Kurs_Schulung19_20\Kurs_Schulung19_20.csv"
+csv_path = r"C:\Users\Paul\Downloads\Kurse Schulung20_21.csv (1)\Kurse Schulung20_21.csv"
 logging.debug(f"Loading csv file {csv_path}")
 
 kurs_file = pd.read_csv(csv_path)
 
 person_colume_name = kurs_file.columns[1]
+croRef_colume_name = kurs_file.columns[2]
 time_colume_name = kurs_file.columns[0]
 
 logging.debug(f"Using {person_colume_name} as person_colume_name")
@@ -22,6 +23,7 @@ logging.debug(f"Using {time_colume_name} as time_colume_name")
 subject_names = list(kurs_file.columns)
 subject_names.remove(person_colume_name)
 subject_names.remove(time_colume_name)
+subject_names.remove(croRef_colume_name)
 filtered_subject_names = []
 group_types = []
 for name in subject_names:
@@ -60,11 +62,22 @@ for i, teacher in kurs_file.iterrows():
             else:
                 subject_preferences.append(0)
         preferences.append(subject_preferences)
+    coRef = True
+    if teacher[croRef_colume_name] == "Ref":
+        coRef = False
+    woman = input(f"Is {teacher[person_colume_name]} an woman? Type y: ")
+    if woman in ["y", "Y", "Yes", "yes"]:
+        woman = True
+    else:
+        woman = False
+
     teachers_config.append({
         "name": teacher[person_colume_name],
         "shortName": teacher[person_colume_name][:3],
         "maxLessons": 10,
-        "preferences": preferences
+        "preferences": preferences,
+        "coRef": coRef,
+        "woman": woman
     })
 
 final_config["teachers"] = teachers_config
@@ -73,7 +86,7 @@ config_dir = os.getcwd()
 path = input(f"Root for result config [{config_dir}]:")
 if path != "":
     config_dir = path
-with open(os.path.join(config_dir, "csv_config.json"), 'w', encoding="UTF-16") as f:
+with open(os.path.join(config_dir, "csv_config2021.json"), 'w', encoding="UTF-16") as f:
     json.dump(final_config, f, indent=4, sort_keys=True, ensure_ascii=False)
 
 logging.info("Done")

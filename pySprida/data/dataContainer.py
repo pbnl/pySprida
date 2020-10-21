@@ -85,7 +85,9 @@ class DataContainer:
                 name=teacher["name"],
                 short_name=teacher["shortName"],
                 preferences=teacher["preferences"],
-                max_lessons=teacher["maxLessons"]
+                max_lessons=teacher["maxLessons"],
+                co_ref=bool(teacher["coRef"]),
+                woman=bool(teacher["woman"])
             ))
 
     @property
