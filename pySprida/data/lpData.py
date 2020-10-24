@@ -13,7 +13,8 @@ class LPData:
     def get_preferences(self):
         preferences = np.zeros(0)
         for teacher in self._data_container.teachers:
-            teacher_prefs = np.array(teacher.preferences).reshape(-1)
+            teacher_prefs = teacher.get_all_subject_preferences()
+            teacher_prefs = teacher_prefs.reshape(-1)
             preferences = np.append(preferences, teacher_prefs)
         return preferences
 
@@ -22,6 +23,43 @@ class LPData:
         for teacher in self._data_container.teachers:
             max_lessons = np.append(max_lessons, teacher.max_lessons)
         return max_lessons
+
+    def get_num_teche(self):
+        return len(self._data_container.teachers)
+
+    def get_num_groups(self):
+        return len(self._data_container.groups)
+
+    def get_num_subjects(self):
+        return len(self._data_container.subject_types)
+
+    def lesson_exist_list(self):
+        existing = []
+        for group in self._data_container.groups:
+            type = group.group_type
+            for subject in type.existing_noneexisting_subjects:
+                if subject:
+                    existing.append(True)
+                else:
+                    existing.append(False)
+        existing = np.array(existing).reshape(self._data_container.num_groups, self._data_container.num_subjects)
+        existing = np.transpose(existing)
+        existing = existing.reshape(-1)
+        return existing
+
+    def get_lessons_per_subject(self):
+        lessons = []
+        for group in self._data_container.groups:
+            type = group.group_type
+            for subject in type.existing_noneexisting_subjects:
+                if subject is None:
+                    lessons.append(0)
+                else:
+                    lessons.append(subject.num_lessons)
+        lessons = np.array(lessons).reshape(self._data_container.num_groups, self._data_container.num_subjects)
+        lessons = np.transpose(lessons)
+        lessons = lessons.reshape(-1)
+        return lessons
 
 
 if __name__ == "__main__":

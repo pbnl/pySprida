@@ -41,19 +41,20 @@ class DataContainer:
 
     def load_subject_types(self, config):
         subs = config["subjects"]
-        for sub in subs:
+        for i, sub in enumerate(subs):
             self.subject_types.append(SubjectType(
                 container=self,
-                name=sub["name"]
+                name=sub["name"],
+                id=i
             ))
 
     def load_group_types(self, config):
         group_types = config["groupTypes"]
         subjects = config["subjects"]
-        for i, group_type in enumerate(group_types):
+        for group_type_id, group_type in enumerate(group_types):
             existing_noneexisting_subjects = []
             for j, subject in enumerate(subjects):
-                num = subject["lessons_in_group_types"][i]
+                num = subject["lessons_in_group_types"][group_type_id]
                 if num > 0:
                     existing_noneexisting_subjects.append(Subject(
                         container=self,
@@ -64,7 +65,8 @@ class DataContainer:
             self.group_types.append(GroupType(
                 container=self,
                 name=group_type,
-                existing_noneexisting_subjects=existing_noneexisting_subjects
+                existing_noneexisting_subjects=existing_noneexisting_subjects,
+                id=group_type_id
             ))
             for group_type in self.group_types:
                 group_type.link_subjects()
@@ -99,13 +101,17 @@ class DataContainer:
         return len(self.subject_types) * len(self.groups)
 
     @property
+    def num_subjects(self):
+        return len(self.subject_types)
+
+    @property
     def num_groups(self):
         return len(self.groups)
 
     def get_preference_matrix(self):
         preferences = np.zeros((self.num_teacher, self.num_cources))
         for i, teacher in enumerate(self.teachers):
-            preferences[i] = np.array(teacher.preferences).reshape(-1)
+            preferences[i] = np.array(teacher.get_all_subject_preferences()).reshape(-1)
         return preferences
 
     def get_teacher_names(self):

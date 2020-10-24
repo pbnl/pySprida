@@ -5,7 +5,7 @@
             "B",
             "C"
         ],
-        "numGroups": [1, 1, 1],
+        "numGroups": [2, 1, 2],
         "subjects": [
             {"name": "Kasse",
             "lessons_in_group_types":  [3,3,3]},

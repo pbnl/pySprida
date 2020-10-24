@@ -1,4 +1,7 @@
 from typing import List
+import numpy as np
+
+from pySprida.data.groupType import GroupType
 
 
 class Teacher:
@@ -23,3 +26,15 @@ class Teacher:
                         raise ValueError(
                             f"{self.name} has a preference > 0 for class {i}_{j}. But this subject does not exist in this class configuration!")
         return subjects
+
+    def get_all_subject_preferences(self):
+        prefs = []
+        for group in self.container.groups:
+            gtype: GroupType = group.group_type
+            gid = gtype.id
+            group_prefs = []
+            for i, sub in enumerate(gtype.existing_noneexisting_subjects):
+                pref = self.preferences[i][gid]
+                group_prefs.append(pref)
+            prefs.append(group_prefs)
+        return np.transpose(np.array(prefs))

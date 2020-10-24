@@ -4,10 +4,11 @@ from pySprida.data.subject import Subject
 
 
 class GroupType:
-    def __init__(self, container, name, existing_noneexisting_subjects):
+    def __init__(self, container, name, existing_noneexisting_subjects, id):
         self.container = container
         self.name: str = name
         self.existing_noneexisting_subjects: List[Subject] = existing_noneexisting_subjects
+        self.id = id
 
     def link_subjects(self):
         for sub in self.teached_subjects:
