@@ -83,6 +83,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                 else:
                     return str(self._teacher_names[section - 2])
 
+
 class StyleDelegateForQTableWidget(QStyledItemDelegate):
     color_default = QColor("#aaedff")
 
