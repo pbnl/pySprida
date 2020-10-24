@@ -11,7 +11,7 @@ class LPSolver(Solver):
 
     def __init__(self, problem, data_container):
         super().__init__(problem, data_container)
-        self.problem : LPData = problem
+        self.problem: LPData = problem
         if not isinstance(problem, LPData):
             raise AttributeError("LPSolver does only support LPData as a problem")
 
@@ -20,33 +20,33 @@ class LPSolver(Solver):
 
         # create variables
         numTeacher = self.problem.get_num_teche()
-        numGroups =  self.problem.get_num_groups()
+        numGroups = self.problem.get_num_groups()
         numSubjects = self.problem.get_num_subjects()
 
-        y = [m.add_var(var_type=mip.BINARY) for i in range(numTeacher*numGroups*numSubjects)]
+        y = [m.add_var(var_type=mip.BINARY) for i in range(numTeacher * numGroups * numSubjects)]
 
-        #constraint group has subject
+        # constraint group has subject
         lessonExisting = self.problem.lesson_exist_list()
         for i in range(numTeacher * numGroups * numSubjects):
-            lessonNumber = i % (numGroups*numSubjects)
+            lessonNumber = i % (numGroups * numSubjects)
             val = lessonExisting[lessonNumber]
             if not val:
                 m += y[i] == 0
 
-        #max lessons
+        # max lessons
         max_lessons = self.problem.get_max_time()
         lessons = self.problem.get_lessons_per_subject()
         for i in range(numTeacher):
-            m += mip.xsum([y[i*numGroups*numSubjects + j] * lessons[j] for j in range(numGroups*numSubjects)]) <= max_lessons[i]
+            m += mip.xsum([y[i * numGroups * numSubjects + j] * lessons[j]
+                           for j in range(numGroups * numSubjects)]) <= max_lessons[i]
 
-        #max one teacher
-        for i in range(numGroups*numSubjects):
+        # max one teacher
+        for i in range(numGroups * numSubjects):
             if lessonExisting[i]:
-                m += mip.xsum([y[j*numGroups*numSubjects + i] for j in range(numTeacher)]) == 1
+                m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) == 1
 
-
-        ## constraint gesamtdauer
-        #for i in range(numBetreuer):
+        # constraint gesamtdauer
+        # for i in range(numBetreuer):
         #    m += mip.xsum(
         #        gesamtdauer[i % lenBetreuer] * y[i] for j in range(0, numBetreuer) for i in range(j, j + lenBetreuer))
 
@@ -54,7 +54,7 @@ class LPSolver(Solver):
 
         # set target
         preferences = self.problem.get_preferences()
-        m.objective = mip.maximize(mip.xsum(y[i] * preferences[i] for i in range(numTeacher*numGroups*numSubjects)))
+        m.objective = mip.maximize(mip.xsum(y[i] * preferences[i] for i in range(numTeacher * numGroups * numSubjects)))
 
         status = m.optimize(max_seconds=20)
         if status == mip.OptimizationStatus.OPTIMAL:
