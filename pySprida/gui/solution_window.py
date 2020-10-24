@@ -4,7 +4,8 @@ from pathlib import Path
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableView, QDesktopWidget
+from PyQt5.QtGui import QColor, QPalette, QBrush
+from PyQt5.QtWidgets import QTableView, QDesktopWidget, QStyledItemDelegate, QStyle
 
 from pySprida.data.dataContainer import DataContainer
 from pySprida.data.solution import Solution
@@ -82,6 +83,29 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                 else:
                     return str(self._teacher_names[section - 2])
 
+class StyleDelegateForQTableWidget(QStyledItemDelegate):
+    color_default = QColor("#aaedff")
+
+    def paint(self, painter, option, index):
+        if option.state & QStyle.State_Selected:
+            option.palette.setColor(QPalette.HighlightedText, Qt.black)
+            color = self.combineColors(self.color_default, self.background(option, index))
+            option.palette.setColor(QPalette.Highlight, color)
+        QStyledItemDelegate.paint(self, painter, option, index)
+
+    def background(self, option, index):
+        color = self.parent().model().data(index, Qt.BackgroundRole)
+        return color
+
+    @staticmethod
+    def combineColors(c1, c2):
+        c3 = QColor()
+        c3.setRed((c1.red() + c2.red()) / 2)
+        c3.setGreen((c1.green() + c2.green()) / 2)
+        c3.setBlue((c1.blue() + c2.blue()) / 2)
+
+        return c3
+
 
 class ColoredMappingTableView(QTableView):
     def __init__(self, data_container: DataContainer):
@@ -92,6 +116,8 @@ class ColoredMappingTableView(QTableView):
         self._num_teachers = data_container.num_teacher
         for i in range(self._num_courses // self._num_groups):
             self.setSpan(0, i * self._num_groups, 1, self._num_groups)
+
+        self.setItemDelegate(StyleDelegateForQTableWidget(self))
 
     def ajust_size(self):
         for i in range(self._num_courses):
