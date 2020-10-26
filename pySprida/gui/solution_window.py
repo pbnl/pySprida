@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent, pyqtSignal
 from PyQt5.QtGui import QColor, QPalette, QBrush
 from PyQt5.QtWidgets import QTableView, QDesktopWidget, QStyledItemDelegate, QStyle
 
@@ -19,6 +19,10 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
         self._teacher_names = data_container.get_teacher_names()
         self._group_names = data_container.get_group_names()
         self._subject_names = data_container.get_subject_names()
+
+    def update_pref(self, row, col, pref):
+        print("Test")
+        self._preferences[row][col] = pref
 
     def data(self, index, role):
         if role == Qt.DisplayRole:
@@ -109,8 +113,13 @@ class StyleDelegateForQTableWidget(QStyledItemDelegate):
 
 
 class ColoredMappingTableView(QTableView):
+    adjusted_pref = pyqtSignal(int, int, int)
+
     def __init__(self, data_container: DataContainer):
         super().__init__()
+        # We need this to allow navigating without editing
+        self.catch = False
+
         self._data_container = data_container
         self._num_groups = data_container.num_groups
         self._num_courses = data_container.num_cources
@@ -120,11 +129,42 @@ class ColoredMappingTableView(QTableView):
 
         self.setItemDelegate(StyleDelegateForQTableWidget(self))
 
+        self.keys = [Qt.Key_1,
+                     Qt.Key_2,
+                     Qt.Key_3,
+                     Qt.Key_4,
+                     Qt.Key_5,
+                     Qt.Key_R]
+
     def ajust_size(self):
         for i in range(self._num_courses):
             self.setColumnWidth(i, 1)
         for i in range(self._num_teachers + 2):
             self.setRowHeight(i, 1)
+
+    def focusInEvent(self, event):
+        self.catch = False
+        return QTableView.focusInEvent(self, event)
+
+    def focusOutEvent(self, event):
+        self.catch = True
+        return QTableView.focusOutEvent(self, event)
+
+    def event(self, event):
+        if event.type() == QEvent.KeyPress and event.key() in self.keys:
+            self.adjust_pref(event.key())
+
+        return QTableView.event(self, event)
+
+    def adjust_pref(self, key):
+        pref = self.keys.index(key) + 1
+        selected = self.selectedIndexes()[0]
+        row = selected.row()
+        col = selected.column()
+
+        self.model().update_pref(row - 2, col, pref)
+        self.update()
+        self.adjusted_pref.emit(row - 2, col, pref)
 
 
 class SolutionWindow(QtWidgets.QMainWindow):

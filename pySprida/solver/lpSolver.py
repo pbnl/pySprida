@@ -54,7 +54,9 @@ class LPSolver(Solver):
 
         # set target
         preferences = self.problem.get_preferences()
-        m.objective = mip.maximize(mip.xsum(y[i] * preferences[i] for i in range(numTeacher * numGroups * numSubjects)))
+        pref_target = mip.xsum(y[i] * preferences[i] for i in range(numTeacher * numGroups * numSubjects))
+        target = pref_target
+        m.objective = mip.maximize(target)
 
         status = m.optimize(max_seconds=20)
         if status == mip.OptimizationStatus.OPTIMAL:
