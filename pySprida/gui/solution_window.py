@@ -36,7 +36,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                 else:
                     return self._subject_names[(index.column() - 1) // len(self._group_names)]
             elif index.row() == 1:
-                if index.column() >0:
+                if index.column() > 0:
                     return self._group_names[(index.column() - 1) % len(self._group_names)]
             else:
                 if index.column() == 0:
