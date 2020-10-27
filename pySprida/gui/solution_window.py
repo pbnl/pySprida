@@ -19,9 +19,9 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
         self._teacher_names = data_container.get_teacher_names()
         self._group_names = data_container.get_group_names()
         self._subject_names = data_container.get_subject_names()
+        self._num_lessons = solution.get_teacher_num_lessons()
 
     def update_pref(self, row, col, pref):
-        print("Test")
         self._preferences[row][col] = pref
 
     def data(self, index, role):
@@ -30,22 +30,29 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
             # .row() indexes into the outer list,
             # .column() indexes into the sub-list
             if index.row() == 0:
-                return self._subject_names[index.column() // len(self._group_names)]
+                if index.column() == 0:
+                    return "Num"
+                else:
+                    return self._subject_names[(index.column() - 1) // len(self._group_names)]
             elif index.row() == 1:
-                return self._group_names[index.column() % len(self._group_names)]
+                return self._group_names[(index.column() - 1) % len(self._group_names)]
             else:
-                if self._mapping[index.row() - 2][index.column()]:
+                if index.column() == 0:
+                    return str(self._num_lessons[index.row() - 2])
+                elif self._mapping[index.row() - 2][index.column()-1]:
                     return "X"
             return ""
         if role == Qt.BackgroundRole:
-            second_col = (index.column() // len(self._group_names)) % 2
+            second_col = ((index.column()-1) // len(self._group_names)) % 2
             if index.row() == 1:
                 if second_col:
                     return QtGui.QColor("#9da1fc")
                 else:
                     return QtGui.QColor("#bdc0ff")
             if index.row() > 1:
-                value = self._preferences[index.row() - 2][index.column()]
+                if index.column() < 1:
+                    return QtGui.QColor("#ffffff")
+                value = self._preferences[index.row() - 2][index.column()-1]
                 if value == 0:
                     return QtGui.QColor("#ffffff")
                 elif value >= 1 and value <= 2:
@@ -71,7 +78,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
     def columnCount(self, index):
         # The following takes the first sub-list, and returns
         # the length (only works if all rows are an equal length)
-        return len(self._mapping[0])
+        return len(self._mapping[0]) + 1
 
     def headerData(self, section, orientation, role):
         # section is the index of the column/row.
@@ -124,8 +131,8 @@ class ColoredMappingTableView(QTableView):
         self._num_groups = data_container.num_groups
         self._num_courses = data_container.num_cources
         self._num_teachers = data_container.num_teacher
-        for i in range(self._num_courses // self._num_groups):
-            self.setSpan(0, i * self._num_groups, 1, self._num_groups)
+        for i in range(0, self._num_courses // self._num_groups):
+            self.setSpan(0, i * self._num_groups + 1, 1, self._num_groups)
 
         self.setItemDelegate(StyleDelegateForQTableWidget(self))
 
@@ -162,9 +169,9 @@ class ColoredMappingTableView(QTableView):
         row = selected.row()
         col = selected.column()
 
-        self.model().update_pref(row - 2, col, pref)
+        self.model().update_pref(row - 2, col - 1, pref)
         self.update()
-        self.adjusted_pref.emit(row - 2, col, pref)
+        self.adjusted_pref.emit(row - 2, col - 1, pref)
 
 
 class SolutionWindow(QtWidgets.QMainWindow):
