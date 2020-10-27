@@ -1,6 +1,7 @@
 from pySprida.data.dataContainer import DataContainer
 import numpy as np
 
+
 class Solution:
 
     def __init__(self, solution_data, data_container: DataContainer, problem):

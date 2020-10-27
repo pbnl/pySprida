@@ -25,7 +25,7 @@ class LPSolver(Solver):
 
         y = [m.add_var(var_type=mip.BINARY) for i in range(numTeacher * numGroups * numSubjects)]
         lessons_bound_start_idx = numTeacher * numGroups * numSubjects
-        num_lessons_bounds = int((numTeacher * (numTeacher-1))/2)
+        num_lessons_bounds = int((numTeacher * (numTeacher - 1)) / 2)
         y.extend([m.add_var(var_type=mip.CONTINUOUS) for i in range(num_lessons_bounds)])
 
         # constraint group has subject
@@ -48,13 +48,13 @@ class LPSolver(Solver):
             for j in range(i):
                 if i != j:
                     m += (mip.xsum([y[i * numGroups * numSubjects + k] * lessons[k]
-                                    for k in range(numGroups * numSubjects)]) \
-                          - \
+                                    for k in range(numGroups * numSubjects)])
+                          -
                           mip.xsum([y[j * numGroups * numSubjects + k] * lessons[k]
                                     for k in range(numGroups * numSubjects)])) <= y[lessons_bound_start_idx + idx]
                     m += -(mip.xsum([y[i * numGroups * numSubjects + k] * lessons[k]
-                                     for k in range(numGroups * numSubjects)]) \
-                           - \
+                                     for k in range(numGroups * numSubjects)])
+                           -
                            mip.xsum([y[j * numGroups * numSubjects + k] * lessons[k]
                                      for k in range(numGroups * numSubjects)])) <= y[lessons_bound_start_idx + idx]
                     idx += 1
@@ -63,8 +63,6 @@ class LPSolver(Solver):
         for i in range(numGroups * numSubjects):
             if lessonExisting[i]:
                 m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) == 1
-
-
 
         # constraint prios
         # set target

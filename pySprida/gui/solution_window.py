@@ -39,11 +39,11 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
             else:
                 if index.column() == 0:
                     return str(self._num_lessons[index.row() - 2])
-                elif self._mapping[index.row() - 2][index.column()-1]:
+                elif self._mapping[index.row() - 2][index.column() - 1]:
                     return "X"
             return ""
         if role == Qt.BackgroundRole:
-            second_col = ((index.column()-1) // len(self._group_names)) % 2
+            second_col = ((index.column() - 1) // len(self._group_names)) % 2
             if index.row() == 1:
                 if second_col:
                     return QtGui.QColor("#9da1fc")
@@ -52,7 +52,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
             if index.row() > 1:
                 if index.column() < 1:
                     return QtGui.QColor("#ffffff")
-                value = self._preferences[index.row() - 2][index.column()-1]
+                value = self._preferences[index.row() - 2][index.column() - 1]
                 if value == 0:
                     return QtGui.QColor("#ffffff")
                 elif value >= 1 and value <= 2:
