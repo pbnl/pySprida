@@ -14,7 +14,7 @@ if __name__ == "__main__":
     printer = ConsolePrinter()
 
     container = DataContainer()
-    container.load_data(Path("./testData/testProblem.json"))
+    container.load_data(Path("./testData/csv_config2021.json"))
     printer.printTeachers(container)
     printer.printGroups(container)
 

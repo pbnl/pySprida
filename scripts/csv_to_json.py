@@ -8,7 +8,7 @@ import pandas as pd
 
 final_config = {"config": {}}
 
-csv_path = r"C:\Users\Paul\Downloads\Kurse Schulung20_21.csv (1)\Kurse Schulung20_21.csv"
+csv_path = r"/home/paul/Dokumente/Pfadfinder/Schulung/Schulungen/20_21/stundenplan/Kurse Schulung20_21_2.csv"
 logging.debug(f"Loading csv file {csv_path}")
 
 kurs_file = pd.read_csv(csv_path)
@@ -27,7 +27,7 @@ subject_names.remove(croRef_colume_name)
 filtered_subject_names = []
 group_types = []
 for name in subject_names:
-    group_type = (name.split("["))[1].split("]")[0]
+    group_type = ((name.split("["))[1].split("]")[0])[0]
     name = re.sub(r"\[.*\]", "", name)[:-1]
     if name not in filtered_subject_names:
         filtered_subject_names.append(name)
@@ -86,7 +86,7 @@ config_dir = os.getcwd()
 path = input(f"Root for result config [{config_dir}]:")
 if path != "":
     config_dir = path
-with open(os.path.join(config_dir, "csv_config2021.json"), 'w', encoding="UTF-16") as f:
+with open(os.path.join(config_dir, "../testData/csv_config2021.json"), 'w', encoding="UTF-16") as f:
     json.dump(final_config, f, indent=4, sort_keys=True, ensure_ascii=False)
 
 logging.info("Done")

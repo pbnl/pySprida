@@ -73,7 +73,7 @@ class LPSolver(Solver):
         target = mip.xsum(y[i] * weights[i] for i in range(numTeacher * numGroups * numSubjects + num_lessons_bounds))
         m.objective = mip.maximize(target)
 
-        status = m.optimize(max_seconds=10)
+        status = m.optimize(max_seconds=3)
         if status == mip.OptimizationStatus.OPTIMAL:
             print('optimal solution cost {} found'.format(m.objective_value))
         elif status == mip.OptimizationStatus.FEASIBLE:

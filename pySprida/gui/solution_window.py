@@ -20,6 +20,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
         self._group_names = data_container.get_group_names()
         self._subject_names = data_container.get_subject_names()
         self._num_lessons = solution.get_teacher_num_lessons()
+        self._co_ref = data_container.get_teacher_co_ref()
 
     def update_pref(self, row, col, pref):
         self._preferences[row][col] = pref
@@ -35,7 +36,8 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                 else:
                     return self._subject_names[(index.column() - 1) // len(self._group_names)]
             elif index.row() == 1:
-                return self._group_names[(index.column() - 1) % len(self._group_names)]
+                if index.column() >0:
+                    return self._group_names[(index.column() - 1) % len(self._group_names)]
             else:
                 if index.column() == 0:
                     return str(self._num_lessons[index.row() - 2])
@@ -50,7 +52,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                 else:
                     return QtGui.QColor("#bdc0ff")
             if index.row() > 1:
-                if index.column() < 1:
+                if index.column() == 1:
                     return QtGui.QColor("#ffffff")
                 value = self._preferences[index.row() - 2][index.column() - 1]
                 if value == 0:
