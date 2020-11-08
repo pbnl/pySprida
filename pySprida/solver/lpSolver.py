@@ -65,7 +65,7 @@ class LPSolver(Solver):
         praev_idx = self.data_container.get_subject_names()
         praev_idx = praev_idx.index("Praevention")
         num_groups = self.data_container.num_groups
-        praevention_ids = [i for i in range(praev_idx*num_groups, (praev_idx + 1)*numGroups)]
+        praevention_ids = [i for i in range(praev_idx * num_groups, (praev_idx + 1) * numGroups)]
         for i in range(numGroups * numSubjects):
             if lessonExisting[i] and i not in praevention_ids:
                 m += mip.xsum([y[j * numGroups * numSubjects + i] * ref[j] for j in range(numTeacher)]) == 1
@@ -74,7 +74,7 @@ class LPSolver(Solver):
             if lessonExisting[i] and i not in praevention_ids:
                 m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
 
-        #Prävention stuff
+        # Prävention stuff
         ref_woman_old = self.data_container.get_teacher_woman()
         ref_woman = [int(tmp) for tmp in ref_woman_old]
         ref_man = [int(not tmp) for tmp in ref_woman_old]

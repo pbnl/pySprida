@@ -53,7 +53,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                     return QtGui.QColor("#bdc0ff")
             if index.row() > 1:
                 if index.column() == 0:
-                    if self._co_ref[index.row() - 2] == True:
+                    if self._co_ref[index.row() - 2]:
                         return QtGui.QColor("#348feb")
                     else:
                         return QtGui.QColor("#ffffff")
