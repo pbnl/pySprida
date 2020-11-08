@@ -26,9 +26,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.load_debug_data()
 
-
     def select_config_file(self):
-        data_path, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', r"/home/paul/PycharmProjects/pySprida/testData", '*.json')
+        data_path, _ = QtWidgets.QFileDialog.getOpenFileName(
+            None, 'Open File', r"/home/paul/PycharmProjects/pySprida/testData", '*.json')
         self.ui.config_path.setText(data_path)
 
     def load_config(self):

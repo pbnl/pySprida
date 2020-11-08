@@ -46,9 +46,9 @@ class LPSolver(Solver):
         lessons = self.problem.get_lessons_per_subject()
         for i in range(numTeacher):
             self.m += mip.xsum([y[i * numGroups * numSubjects + j] * lessons[j]
-                           for j in range(numGroups * numSubjects)]) <= max_lessons[i]
+                                for j in range(numGroups * numSubjects)]) <= max_lessons[i]
 
-        #equal lessons in one subject
+        # equal lessons in one subject
         idx = 0
         for subi in range(numSubjects):
             for i in range(numTeacher):
@@ -66,21 +66,21 @@ class LPSolver(Solver):
                                               for k in range(numGroups * numSubjects)])) <= y[subject_bound_start_idx + idx]
                         idx += 1
 
-        #equal lessons per teacher
+        # equal lessons per teacher
         idx = 0
         for i in range(numTeacher):
             for j in range(i):
                 if i != j:
                     self.m += (mip.xsum([y[i * numGroups * numSubjects + k] * lessons[k]
-                                    for k in range(numGroups * numSubjects)])
-                          -
-                          mip.xsum([y[j * numGroups * numSubjects + k] * lessons[k]
-                                    for k in range(numGroups * numSubjects)])) <= y[lessons_bound_start_idx + idx]
+                                         for k in range(numGroups * numSubjects)])
+                               -
+                               mip.xsum([y[j * numGroups * numSubjects + k] * lessons[k]
+                                         for k in range(numGroups * numSubjects)])) <= y[lessons_bound_start_idx + idx]
                     self.m += -(mip.xsum([y[i * numGroups * numSubjects + k] * lessons[k]
-                                     for k in range(numGroups * numSubjects)])
-                           -
-                           mip.xsum([y[j * numGroups * numSubjects + k] * lessons[k]
-                                     for k in range(numGroups * numSubjects)])) <= y[lessons_bound_start_idx + idx]
+                                          for k in range(numGroups * numSubjects)])
+                                -
+                                mip.xsum([y[j * numGroups * numSubjects + k] * lessons[k]
+                                          for k in range(numGroups * numSubjects)])) <= y[lessons_bound_start_idx + idx]
                     idx += 1
 
         # max one teacher

@@ -154,9 +154,9 @@ class ColoredMappingTableView(QTableView):
         self.setRowHeight(0, 1)
         self.setColumnWidth(0, 1)
         for i in range(self._num_courses):
-            self.setColumnWidth(i+1, 1)
+            self.setColumnWidth(i + 1, 1)
         for i in range(self._num_teachers + 2):
-            self.setRowHeight(i+1, 1)
+            self.setRowHeight(i + 1, 1)
 
     def focusInEvent(self, event):
         self.catch = False

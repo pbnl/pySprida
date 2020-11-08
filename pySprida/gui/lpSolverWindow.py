@@ -4,7 +4,6 @@ from pySprida.data.dataContainer import DataContainer
 from pySprida.gui.lpsolveredit import Ui_LPSolverEdit
 
 
-
 class LPSolverWindow(QMainWindow):
 
     def __init__(self, container: DataContainer, *args, **kwargs):

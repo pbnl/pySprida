@@ -135,7 +135,7 @@ class DataContainer:
 
     def load_solvers(self, param):
         self.solver_config = param["solver"]
-        #TODO: Support other solvers
+        # TODO: Support other solvers
 
 
 if __name__ == "__main__":
