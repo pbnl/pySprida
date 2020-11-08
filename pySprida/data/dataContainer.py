@@ -126,6 +126,9 @@ class DataContainer:
     def get_teacher_co_ref(self):
         return [teacher.co_ref for teacher in self.teachers]
 
+    def get_teacher_woman(self):
+        return [teacher.woman for teacher in self.teachers]
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

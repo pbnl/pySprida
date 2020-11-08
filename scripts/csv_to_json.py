@@ -8,7 +8,7 @@ import pandas as pd
 
 final_config = {"config": {}}
 
-csv_path = r"/home/paul/Dokumente/Pfadfinder/Schulung/Schulungen/20_21/stundenplan/Kurse Schulung20_21_2.csv"
+csv_path = r"C:\Users\Paul\Nextcloud\Schulung\Schulungen\20_21\stundenplan\corona_version.csv"
 logging.debug(f"Loading csv file {csv_path}")
 
 kurs_file = pd.read_csv(csv_path)

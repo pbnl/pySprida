@@ -60,9 +60,30 @@ class LPSolver(Solver):
                     idx += 1
 
         # max one teacher
+        co_ref = self.data_container.get_teacher_co_ref()
+        ref = [int(not tmp) for tmp in co_ref]
+        praev_idx = self.data_container.get_subject_names()
+        praev_idx = praev_idx.index("Praevention")
+        num_groups = self.data_container.num_groups
+        praevention_ids = [i for i in range(praev_idx*num_groups, (praev_idx + 1)*numGroups)]
         for i in range(numGroups * numSubjects):
-            if lessonExisting[i]:
-                m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) == 1
+            if lessonExisting[i] and i not in praevention_ids:
+                m += mip.xsum([y[j * numGroups * numSubjects + i] * ref[j] for j in range(numTeacher)]) == 1
+
+        for i in range(numGroups * numSubjects):
+            if lessonExisting[i] and i not in praevention_ids:
+                m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
+
+        #Prävention stuff
+        ref_woman_old = self.data_container.get_teacher_woman()
+        ref_woman = [int(tmp) for tmp in ref_woman_old]
+        ref_man = [int(not tmp) for tmp in ref_woman_old]
+
+        for i in range(numGroups * numSubjects):
+            if lessonExisting[i] and i in praevention_ids:
+                m += mip.xsum([y[j * numGroups * numSubjects + i] * ref_woman[j] for j in range(numTeacher)]) >= 1
+                m += mip.xsum([y[j * numGroups * numSubjects + i] * ref_man[j] for j in range(numTeacher)]) >= 1
+                m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
 
         # constraint prios
         # set target
@@ -73,7 +94,7 @@ class LPSolver(Solver):
         target = mip.xsum(y[i] * weights[i] for i in range(numTeacher * numGroups * numSubjects + num_lessons_bounds))
         m.objective = mip.maximize(target)
 
-        status = m.optimize(max_seconds=3)
+        status = m.optimize(max_seconds=20)
         if status == mip.OptimizationStatus.OPTIMAL:
             print('optimal solution cost {} found'.format(m.objective_value))
         elif status == mip.OptimizationStatus.FEASIBLE:
@@ -81,7 +102,7 @@ class LPSolver(Solver):
         elif status == mip.OptimizationStatus.NO_SOLUTION_FOUND:
             print('no feasible solution found, lower bound is: {}'.format(m.objective_bound))
         if status == mip.OptimizationStatus.OPTIMAL or status == mip.OptimizationStatus.FEASIBLE:
-            print('solution:')
+            print(f"solution: {status}")
 
         sol = np.array([v.x for v in m.vars[:lessons_bound_start_idx]])
         return Solution(sol, self.data_container, self.problem)
