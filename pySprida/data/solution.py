@@ -1,13 +1,25 @@
+import mip
+
 from pySprida.data.dataContainer import DataContainer
 import numpy as np
 
 
 class Solution:
 
-    def __init__(self, solution_data, data_container: DataContainer, problem):
+    def __init__(self, solution_data,
+                 data_container: DataContainer,
+                 problem,
+                 log,
+                 loss,
+                 status,
+                 relaxed_loss):
         self.solution_data = solution_data
         self._data_container = data_container
         self.problem = problem
+        self.log = log
+        self.loss = loss
+        self.status = status
+        self.relaxed_loss = relaxed_loss
 
     def get_mapping_matrix(self):
         num_teacher = self._data_container.num_teacher
@@ -28,3 +40,14 @@ class Solution:
             num_lessons.append(sum([self.solution_data[i * numGroups * numSubjects + j] * lessons[j]
                                     for j in range(numGroups * numSubjects)]))
         return np.array(num_lessons)
+
+    @property
+    def status_name(self):
+        if self.status == mip.OptimizationStatus.OPTIMAL:
+            return "Optimal"
+        elif self.status == mip.OptimizationStatus.FEASIBLE:
+            return "Feasible"
+        elif self.status == mip.OptimizationStatus.INFEASIBLE:
+            return "There is no solution"
+        else:
+            return "Error"

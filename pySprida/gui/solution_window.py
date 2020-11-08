@@ -5,7 +5,7 @@ import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal
 from PyQt5.QtGui import QColor, QPalette, QBrush
-from PyQt5.QtWidgets import QTableView, QDesktopWidget, QStyledItemDelegate, QStyle
+from PyQt5.QtWidgets import QTableView, QDesktopWidget, QStyledItemDelegate, QStyle, QWidget, QMainWindow
 
 from pySprida.data.dataContainer import DataContainer
 from pySprida.data.solution import Solution
@@ -149,10 +149,12 @@ class ColoredMappingTableView(QTableView):
                      Qt.Key_R]
 
     def ajust_size(self):
+        self.setRowHeight(0, 1)
+        self.setColumnWidth(0, 1)
         for i in range(self._num_courses):
-            self.setColumnWidth(i, 1)
+            self.setColumnWidth(i+1, 1)
         for i in range(self._num_teachers + 2):
-            self.setRowHeight(i, 1)
+            self.setRowHeight(i+1, 1)
 
     def focusInEvent(self, event):
         self.catch = False
@@ -179,7 +181,7 @@ class ColoredMappingTableView(QTableView):
         self.adjusted_pref.emit(row - 2, col - 1, pref)
 
 
-class SolutionWindow(QtWidgets.QMainWindow):
+class SolutionWindow(QMainWindow):
     def __init__(self, solution, dataContainer):
         super().__init__()
 
