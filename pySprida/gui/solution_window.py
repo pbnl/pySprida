@@ -14,8 +14,9 @@ from pySprida.data.solution import Solution
 class ColoredMappingTableModel(QtCore.QAbstractTableModel):
     def __init__(self, solution: Solution, data_container: DataContainer):
         super(ColoredMappingTableModel, self).__init__()
+        self.data_container = data_container
         self._mapping = solution.get_mapping_matrix()
-        self._preferences = data_container.get_preference_matrix()
+        self._preferences = self.data_container.updated_pref
         self._teacher_names = data_container.get_teacher_names()
         self._group_names = data_container.get_group_names()
         self._subject_names = data_container.get_subject_names()
@@ -24,6 +25,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
 
     def update_pref(self, row, col, pref):
         self._preferences[row][col] = pref
+        self.data_container.updated_pref = self._preferences
 
     def data(self, index, role):
         if role == Qt.DisplayRole:

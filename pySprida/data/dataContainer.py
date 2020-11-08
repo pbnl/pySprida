@@ -13,6 +13,7 @@ from pySprida.data.teacher import Teacher
 class DataContainer:
 
     def __init__(self):
+        self.solver_config = None
         self._data = None
         self.subject_types: List[SubjectType] = []
         self.group_types: List[GroupType] = []
@@ -37,7 +38,10 @@ class DataContainer:
         self.load_group_types(self._data["config"])
         self.load_groups(self._data["config"])
         self.load_teachers(self._data["teachers"])
+        self.load_solvers(self._data["config"])
         logging.debug("Loaded json data")
+
+        self.updated_pref = self.get_preference_matrix()
 
     def load_subject_types(self, config):
         subs = config["subjects"]
@@ -128,6 +132,10 @@ class DataContainer:
 
     def get_teacher_woman(self):
         return [teacher.woman for teacher in self.teachers]
+
+    def load_solvers(self, param):
+        self.solver_config = param["solver"]
+        #TODO: Support other solvers
 
 
 if __name__ == "__main__":

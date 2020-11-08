@@ -1,5 +1,12 @@
 {
     "config": {
+        "solver": {
+            "lp": {
+                "max_time": 30,
+                "equal_lesson_weight": -0.1,
+                "equal_subject_weight": -0.01
+            }
+        },
         "groupTypes": [
             "A",
             "B",

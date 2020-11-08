@@ -11,12 +11,7 @@ class LPData:
         self._data_container = data_container
 
     def get_preferences(self):
-        preferences = np.zeros(0)
-        for teacher in self._data_container.teachers:
-            teacher_prefs = teacher.get_all_subject_preferences()
-            teacher_prefs = teacher_prefs.reshape(-1)
-            preferences = np.append(preferences, teacher_prefs)
-        return preferences
+        return self._data_container.updated_pref.reshape(-1)
 
     def get_max_time(self):
         max_lessons = np.zeros(0)

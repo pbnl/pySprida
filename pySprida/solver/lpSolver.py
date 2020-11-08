@@ -1,5 +1,6 @@
 import mip
 
+from pySprida.data.dataContainer import DataContainer
 from pySprida.data.lpData import LPData
 from pySprida.data.solution import Solution
 from pySprida.solver.solver import Solver
@@ -9,10 +10,10 @@ import numpy as np
 
 class LPSolver(Solver):
 
-    def __init__(self, problem, data_container, max_time=2):
+    def __init__(self, problem, data_container: DataContainer):
         super().__init__(problem, data_container)
         self.problem: LPData = problem
-        self.max_time = max_time
+        self.config = data_container.solver_config["lp"]
         if not isinstance(problem, LPData):
             raise AttributeError("LPSolver does only support LPData as a problem")
 
@@ -25,9 +26,12 @@ class LPSolver(Solver):
         numSubjects = self.problem.get_num_subjects()
 
         y = [self.m.add_var(var_type=mip.BINARY) for i in range(numTeacher * numGroups * numSubjects)]
-        lessons_bound_start_idx = numTeacher * numGroups * numSubjects
+        lessons_bound_start_idx = len(y)
         num_lessons_bounds = int((numTeacher * (numTeacher - 1)) / 2)
         y.extend([self.m.add_var(var_type=mip.CONTINUOUS) for i in range(num_lessons_bounds)])
+        subject_bound_start_idx = len(y)
+        num_subject_bounds = int((numTeacher * (numTeacher - 1)) / 2) * numSubjects
+        y.extend([self.m.add_var(var_type=mip.CONTINUOUS) for i in range(num_subject_bounds)])
 
         # constraint group has subject
         lessonExisting = self.problem.lesson_exist_list()
@@ -44,6 +48,25 @@ class LPSolver(Solver):
             self.m += mip.xsum([y[i * numGroups * numSubjects + j] * lessons[j]
                            for j in range(numGroups * numSubjects)]) <= max_lessons[i]
 
+        #equal lessons in one subject
+        idx = 0
+        for subi in range(numSubjects):
+            for i in range(numTeacher):
+                for j in range(i):
+                    if i != j:
+                        self.m += (mip.xsum([y[i * numGroups * numSubjects + subi * numSubjects + k]
+                                             for k in range(numGroups)])
+                                   -
+                                   mip.xsum([y[j * numGroups * numSubjects + subi * numSubjects + k]
+                                             for k in range(numGroups)])) <= y[subject_bound_start_idx + idx]
+                        self.m += -(mip.xsum([y[i * numGroups * numSubjects + subi * numSubjects + k]
+                                              for k in range(numGroups * numSubjects)])
+                                    -
+                                    mip.xsum([y[j * numGroups * numSubjects + subi * numSubjects + k]
+                                              for k in range(numGroups * numSubjects)])) <= y[subject_bound_start_idx + idx]
+                        idx += 1
+
+        #equal lessons per teacher
         idx = 0
         for i in range(numTeacher):
             for j in range(i):
@@ -90,12 +113,16 @@ class LPSolver(Solver):
         # set target
         preferences = self.problem.get_preferences()
         lesson_diff_weights = np.zeros((num_lessons_bounds))
-        lesson_diff_weights[:] = -0.1
-        weights = np.concatenate((preferences, lesson_diff_weights))
-        target = mip.xsum(y[i] * weights[i] for i in range(numTeacher * numGroups * numSubjects + num_lessons_bounds))
+        lesson_diff_weights[:] = self.config["equal_lesson_weight"]
+        subject_diff_weights = np.zeros((num_subject_bounds))
+        subject_diff_weights[:] = self.config["equal_subject_weight"]
+        weights = np.concatenate((preferences, lesson_diff_weights, subject_diff_weights))
+        target = mip.xsum(y[i] * weights[i] for i in range(numTeacher * numGroups * numSubjects
+                                                           + num_lessons_bounds
+                                                           + num_subject_bounds))
         self.m.objective = mip.maximize(target)
 
-        status = self.m.optimize(max_seconds=self.max_time)
+        status = self.m.optimize(max_seconds=self.config["max_time"])
         if status == mip.OptimizationStatus.OPTIMAL:
             print('optimal solution cost {} found'.format(self.m.objective_value))
         elif status == mip.OptimizationStatus.FEASIBLE:
