@@ -69,11 +69,11 @@ class LPSolver(Solver):
         praevention_ids = [i for i in range(praev_idx * num_groups, (praev_idx + 1) * numGroups)]
         for i in range(numGroups * numSubjects):
             if lessonExisting[i] and i not in praevention_ids:
-                m += mip.xsum([y[j * numGroups * numSubjects + i] * ref[j] for j in range(numTeacher)]) == 1
+                self.m += mip.xsum([y[j * numGroups * numSubjects + i] * ref[j] for j in range(numTeacher)]) == 1
 
         for i in range(numGroups * numSubjects):
             if lessonExisting[i] and i not in praevention_ids:
-                m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
+                self.m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
 
         # Prävention stuff
         ref_woman_old = self.data_container.get_teacher_woman()
@@ -82,9 +82,9 @@ class LPSolver(Solver):
 
         for i in range(numGroups * numSubjects):
             if lessonExisting[i] and i in praevention_ids:
-                m += mip.xsum([y[j * numGroups * numSubjects + i] * ref_woman[j] for j in range(numTeacher)]) >= 1
+                self.m += mip.xsum([y[j * numGroups * numSubjects + i] * ref_woman[j] for j in range(numTeacher)]) >= 1
                 self.m += mip.xsum([y[j * numGroups * numSubjects + i] * ref_man[j] for j in range(numTeacher)]) >= 1
-                m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
+                self.m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
 
         # constraint prios
         # set target

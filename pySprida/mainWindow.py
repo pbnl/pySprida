@@ -38,9 +38,9 @@ class MainWindow(QtWidgets.QMainWindow):
         solver = self.ui.solver_selector.currentText()
         if solver == "LP":
             problem = LPData(self.container)
-            solver = LPSolver(problem, self.container, max_time=2)
-            solver.finished.connect(self.show_solution)
-            solver.start()
+            self.solver = LPSolver(problem, self.container, max_time=2)
+            self.solver.finished.connect(self.show_solution)
+            self.solver.start()
             self.ui.generate_button.setText("Working")
             self.ui.generate_button.setDisabled(True)
             self.ui.status.setText("Working")
@@ -67,4 +67,3 @@ class MainWindow(QtWidgets.QMainWindow):
     def load_debug_data(self):
         self.ui.config_path.setText(r"/home/paul/PycharmProjects/pySprida/testData/csv_config2021.json")
         self.load_config()
-        self.generate()
