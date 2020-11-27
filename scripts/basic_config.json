@@ -1,0 +1,118 @@
+{
+  "config": {
+    "solver": {
+      "lp": {
+        "max_time": 90,
+        "equal_lesson_weight": -0.1,
+        "equal_subject_weight": -0.001,
+        "weight_adjustments": {
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 4,
+          "5": 5
+        }
+      }
+    },
+    "groupTypes": [
+      "A",
+      "B",
+      "C"
+    ],
+    "numGroups": [
+      2,
+      1,
+      2
+    ],
+    "subjects": [
+      {
+        "name": "Kasse",
+        "lessons_in_group_types": [
+          3,
+          3,
+          3
+        ]
+      },
+      {
+        "name": "GL",
+        "lessons_in_group_types": [
+          4,
+          4,
+          3
+        ]
+      },
+      {
+        "name": "Recht",
+        "lessons_in_group_types": [
+          4,
+          3,
+          2
+        ]
+      },
+      {
+        "name": "BIG",
+        "lessons_in_group_types": [
+          3,
+          3,
+          3
+        ]
+      },
+      {
+        "name": "Fahrt und Lager",
+        "lessons_in_group_types": [
+          2,
+          2,
+          1
+        ]
+      },
+      {
+        "name": "HAG",
+        "lessons_in_group_types": [
+          2,
+          2,
+          0
+        ]
+      },
+      {
+        "name": "KomPaed",
+        "lessons_in_group_types": [
+          0,
+          2,
+          2
+        ]
+      },
+      {
+        "name": "Praevention",
+        "lessons_in_group_types": [
+          1,
+          1,
+          2
+        ]
+      },
+      {
+        "name": "OEA",
+        "lessons_in_group_types": [
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "name": "Elternkontakte",
+        "lessons_in_group_types": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "Bunter Bund",
+        "lessons_in_group_types": [
+          0,
+          1,
+          2
+        ]
+      }
+    ]
+  }
+}

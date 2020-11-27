@@ -1,3 +1,6 @@
 texttable
 mip
 pandas
+pyqt5
+numpy
+xlsxwriter
