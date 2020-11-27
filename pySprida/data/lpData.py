@@ -14,9 +14,12 @@ class LPData:
 
     def get_preferences(self):
         preferences = self._data_container.updated_pref.reshape(-1)
-        preferences_adjustet_weights= preferences
+        preferences_adjustet_weights = preferences
         for weight, adjusted_weight in self.weight_adjustments.items():
-            preferences_adjustet_weights = np.where(preferences_adjustet_weights==int(weight), int(adjusted_weight), preferences_adjustet_weights)
+            preferences_adjustet_weights = np.where(
+                preferences_adjustet_weights == int(weight),
+                int(adjusted_weight),
+                preferences_adjustet_weights)
         return preferences_adjustet_weights
 
     def get_max_time(self):

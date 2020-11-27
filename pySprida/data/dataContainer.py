@@ -148,9 +148,9 @@ class DataContainer:
             num = 0
             for group in self.groups:
                 if group.group_type == gtype:
-                    num +=1
+                    num += 1
             num_groups.append(num)
-        data["config"]["numGroups"] =num_groups
+        data["config"]["numGroups"] = num_groups
         data["config"]["solver"] = self.solver_config
         subjects = []
         for sub in self.subject_types:
@@ -163,7 +163,8 @@ class DataContainer:
                             lessons_in_group.append(sub_in_gtype.num_lessons)
                             found = True
                             break
-                if not found: lessons_in_group.append(0)
+                if not found:
+                    lessons_in_group.append(0)
 
             subject = {
                 "name": sub.name,

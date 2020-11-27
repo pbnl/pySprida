@@ -28,7 +28,7 @@ def info_ok_box(text, name="Info"):
 
 class MainWindow(QtWidgets.QMainWindow):
 
-    def __init__(self,primary_screen, *args, **kwargs):
+    def __init__(self, primary_screen, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.ui = Ui_MainWindow()
@@ -44,7 +44,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.container = None
         self.solution = None
-        #self.load_debug_data()
+        # self.load_debug_data()
 
     def export_solution(self):
         if self.solution is None:
@@ -57,26 +57,25 @@ class MainWindow(QtWidgets.QMainWindow):
         subject_names = self.container.get_subject_names()
         gtypes_names = self.container.get_group_names()
         for i, sub_name in enumerate(subject_names):
-            worksheet.write(0, 1 + i*len(gtypes_names), sub_name)
+            worksheet.write(0, 1 + i * len(gtypes_names), sub_name)
             for j, gname in enumerate(gtypes_names):
-                worksheet.write(1, 1 + i*len(gtypes_names) + j, gname)
-        worksheet.set_column(1, len(subject_names)*len(gtypes_names)+1, 3)
+                worksheet.write(1, 1 + i * len(gtypes_names) + j, gname)
+        worksheet.set_column(1, len(subject_names) * len(gtypes_names) + 1, 3)
         for i, teacher in enumerate(self.container.teachers):
-            worksheet.write(i+2, 0, teacher.name)
+            worksheet.write(i + 2, 0, teacher.name)
             for j, selected in enumerate(mapping_matrix[i]):
                 if selected:
-                    worksheet.write(i+2, j+1, "x")
+                    worksheet.write(i + 2, j + 1, "x")
                 else:
-                    worksheet.write(i+2, j+1, "")
+                    worksheet.write(i + 2, j + 1, "")
         workbook.close()
-
 
     def save_problem(self):
         if self.container is None:
             info_ok_box("Load some data first")
             return
         json_data = self.container.to_json()
-        name = QFileDialog.getSaveFileName(self, 'Save File',"a_name.json", "*.json")[0]
+        name = QFileDialog.getSaveFileName(self, 'Save File', "a_name.json", "*.json")[0]
         if name:
             with open(name, 'w', encoding="UTF-8") as f:
                 json.dump(json_data, f, indent=4, sort_keys=True, ensure_ascii=False)

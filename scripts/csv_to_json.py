@@ -62,10 +62,11 @@ if "subjects" not in final_config["config"]:
             "lessons_in_group_types": []
         })
 else:
-    default_subject_names  = [subject["name"] for subject in final_config["config"]["subjects"]]
+    default_subject_names = [subject["name"] for subject in final_config["config"]["subjects"]]
     for new_name, default_name in zip(subject_names, default_subject_names):
         if new_name != default_name:
-            raise Exception(f"Maybe the order of subjects is not the same as in the default config: {new_name} and {default_name}")
+            raise Exception(
+                f"Maybe the order of subjects is not the same as in the default config: {new_name} and {default_name}")
     print("Using default  subjects")
 
 
