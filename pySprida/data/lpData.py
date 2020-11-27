@@ -9,9 +9,15 @@ class LPData:
 
     def __init__(self, data_container: DataContainer):
         self._data_container = data_container
+        self.config = data_container.solver_config["lp"]
+        self.weight_adjustments = self.config["weight_adjustments"]
 
     def get_preferences(self):
-        return self._data_container.updated_pref.reshape(-1)
+        preferences = self._data_container.updated_pref.reshape(-1)
+        preferences_adjustet_weights= preferences
+        for weight, adjusted_weight in self.weight_adjustments.items():
+            preferences_adjustet_weights = np.where(preferences_adjustet_weights==int(weight), int(adjusted_weight), preferences_adjustet_weights)
+        return preferences_adjustet_weights
 
     def get_max_time(self):
         max_lessons = np.zeros(0)

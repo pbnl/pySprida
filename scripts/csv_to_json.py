@@ -14,7 +14,10 @@ parser.add_argument("file_path", type=Path)
 p = parser.parse_args()
 print(p.file_path, type(p.file_path), p.file_path.exists())
 
-final_config = {"config": {}}
+default_json_path = os.path.join(os.path.dirname(__file__), "basic_config.json")
+with open(default_json_path) as f:
+    d = json.load(f)
+    final_config = d
 
 json_path = str(p.file_path.parent / p.file_path.stem) + str(".json")
 logging.debug(f"Loading csv file {str(p.file_path)}")
@@ -47,13 +50,24 @@ del filtered_subject_names
 logging.info(f"Found class_types {group_types}")
 logging.info(f"Found subjects {subject_names}")
 final_config["config"]["groupTypes"] = group_types
-final_config["config"]["numGroups"] = None
-final_config["config"]["subjects"] = []
-for subject in subject_names:
-    final_config["config"]["subjects"].append({
-        "name": subject,
-        "lessons_in_group_types": []
-    })
+if "numGroups" not in final_config["config"]:
+    final_config["config"]["numGroups"] = None
+else:
+    print("Using default num groups")
+if "subjects" not in final_config["config"]:
+    final_config["config"]["subjects"] = []
+    for subject in subject_names:
+        final_config["config"]["subjects"].append({
+            "name": subject,
+            "lessons_in_group_types": []
+        })
+else:
+    default_subject_names  = [subject["name"] for subject in final_config["config"]["subjects"]]
+    for new_name, default_name in zip(subject_names, default_subject_names):
+        if new_name != default_name:
+            raise Exception(f"Maybe the order of subjects is not the same as in the default config: {new_name} and {default_name}")
+    print("Using default  subjects")
+
 
 colume_names = list(kurs_file.columns)
 teachers_config = []

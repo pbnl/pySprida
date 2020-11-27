@@ -1,9 +1,12 @@
+import json
 from pathlib import Path
 
-from PyQt5 import QtWidgets, uic, QtCore
+import xlsxwriter
+from PyQt5 import QtWidgets, uic, QtCore, QtGui
 import sys
 
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QPixmap, QScreen
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from mip import OptimizationStatus
 
 from pySprida.data.dataContainer import DataContainer
@@ -25,23 +28,62 @@ def info_ok_box(text, name="Info"):
 
 class MainWindow(QtWidgets.QMainWindow):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self,primary_screen, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.primary_screen = primary_screen
 
         self.ui.config_path_select_button.clicked.connect(self.select_config_file)
         self.ui.load_config_button.clicked.connect(self.load_config)
         self.ui.generate_button.clicked.connect(self.generate)
         self.ui.solver_edit_button.clicked.connect(self.open_solver_edit_window)
+        self.ui.save_problem_button.clicked.connect(self.save_problem)
+        self.ui.export_solution_button.clicked.connect(self.export_solution)
 
         self.container = None
+        self.solution = None
         #self.load_debug_data()
+
+    def export_solution(self):
+        if self.solution is None:
+            info_ok_box("Generate a solution first")
+            return
+        name = QFileDialog.getSaveFileName(self, 'Save File', "a_name.xlsx", "*.xlsx")[0]
+        workbook = xlsxwriter.Workbook(name)
+        worksheet = workbook.add_worksheet()
+        mapping_matrix = self.solution.get_mapping_matrix()
+        subject_names = self.container.get_subject_names()
+        gtypes_names = self.container.get_group_names()
+        for i, sub_name in enumerate(subject_names):
+            worksheet.write(0, 1 + i*len(gtypes_names), sub_name)
+            for j, gname in enumerate(gtypes_names):
+                worksheet.write(1, 1 + i*len(gtypes_names) + j, gname)
+        worksheet.set_column(1, len(subject_names)*len(gtypes_names)+1, 3)
+        for i, teacher in enumerate(self.container.teachers):
+            worksheet.write(i+2, 0, teacher.name)
+            for j, selected in enumerate(mapping_matrix[i]):
+                if selected:
+                    worksheet.write(i+2, j+1, "x")
+                else:
+                    worksheet.write(i+2, j+1, "")
+        workbook.close()
+
+
+    def save_problem(self):
+        if self.container is None:
+            info_ok_box("Load some data first")
+            return
+        json_data = self.container.to_json()
+        name = QFileDialog.getSaveFileName(self, 'Save File',"a_name.json", "*.json")[0]
+        if name:
+            with open(name, 'w', encoding="UTF-8") as f:
+                json.dump(json_data, f, indent=4, sort_keys=True, ensure_ascii=False)
 
     def select_config_file(self):
         data_path, _ = QtWidgets.QFileDialog.getOpenFileName(
-            None, 'Open File', r"/home/paul/Dokumente/Pfadfinder/Schulung/Schulungen/20_21/stundenplan/Pläne vom 16.11/", '*.json')
+            None, 'Open File', r"/home/paul/Dokumente/Pfadfinder/Schulung/Schulungen/20_21/stundenplan/Pläne vom 28.11/Plänedateien/", '*.json')
         self.ui.config_path.setText(data_path)
 
     def load_config(self):
@@ -94,6 +136,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.loss_progress.setValue(solution.loss)
             self.ui.solution_value.setText(str(solution.loss))
         if solution.status == OptimizationStatus.FEASIBLE or solution.status == OptimizationStatus.OPTIMAL:
+            self.solution = solution
             self.solution_window = SolutionWindow(solution, self.container)
             self.solution_window.show()
         else:

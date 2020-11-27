@@ -41,7 +41,10 @@ class DataContainer:
         self.load_solvers(self._data["config"])
         logging.debug("Loaded json data")
 
-        self.updated_pref = self.get_preference_matrix()
+        if "updated_preferences" in self._data:
+            self.updated_pref = np.array(self._data["updated_preferences"])
+        else:
+            self.updated_pref = self.get_preference_matrix()
 
     def load_subject_types(self, config):
         subs = config["subjects"]
@@ -136,6 +139,53 @@ class DataContainer:
     def load_solvers(self, param):
         self.solver_config = param["solver"]
         # TODO: Support other solvers
+
+    def to_json(self):
+        data = {"config": {}}
+        data["config"]["groupTypes"] = [gtype.name for gtype in self.group_types]
+        num_groups = []
+        for gtype in self.group_types:
+            num = 0
+            for group in self.groups:
+                if group.group_type == gtype:
+                    num +=1
+            num_groups.append(num)
+        data["config"]["numGroups"] =num_groups
+        data["config"]["solver"] = self.solver_config
+        subjects = []
+        for sub in self.subject_types:
+            lessons_in_group = []
+            for gtype in self.group_types:
+                found = False
+                for sub_in_gtype in gtype.existing_noneexisting_subjects:
+                    if sub_in_gtype is not None:
+                        if sub == sub_in_gtype.subject_type:
+                            lessons_in_group.append(sub_in_gtype.num_lessons)
+                            found = True
+                            break
+                if not found: lessons_in_group.append(0)
+
+            subject = {
+                "name": sub.name,
+                "lessons_in_group_types": lessons_in_group
+            }
+            subjects.append(subject)
+        data["config"]["subjects"] = subjects
+
+        teachers = []
+        for teacher in self.teachers:
+            tdata = {
+                "coRef": teacher.co_ref,
+                "maxLessons": teacher.max_lessons,
+                "name": teacher.name,
+                "shortName": teacher.short_name,
+                "woman": teacher.woman,
+                "preferences": teacher.preferences
+            }
+            teachers.append(tdata)
+        data["teachers"] = teachers
+        data["updated_preferences"] = self.updated_pref.tolist()
+        return data
 
 
 if __name__ == "__main__":

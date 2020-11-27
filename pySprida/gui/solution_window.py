@@ -199,10 +199,11 @@ class SolutionWindow(QMainWindow):
 
         self.setCentralWidget(self.table)
 
-        dw = QDesktopWidget()
-        x = int(dw.width() * 0.7)
-        y = int(dw.height() * 0.7)
-        self.resize(x, y)
+        #dw = QDesktopWidget()
+        #x = int(dw.width() * 0.7)
+        #y = int(dw.height() * 0.7)
+        #self.resize(x, y)
+        self.adjustSize()
         self.setWindowTitle("PySprida-Solution")
 
 
