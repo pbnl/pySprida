@@ -6,12 +6,20 @@ import re
 
 import pandas as pd
 
+import argparse
+from pathlib import Path
+
+parser = argparse.ArgumentParser()
+parser.add_argument("file_path", type=Path)
+p = parser.parse_args()
+print(p.file_path, type(p.file_path), p.file_path.exists())
+
 final_config = {"config": {}}
 
-csv_path = r"C:\Users\Paul\Nextcloud\Schulung\Schulungen\20_21\stundenplan\corona_version.csv"
-logging.debug(f"Loading csv file {csv_path}")
+json_path = str(p.file_path.parent / p.file_path.stem) + str(".json")
+logging.debug(f"Loading csv file {str(p.file_path)}")
 
-kurs_file = pd.read_csv(csv_path)
+kurs_file = pd.read_csv(p.file_path)
 
 person_colume_name = kurs_file.columns[1]
 croRef_colume_name = kurs_file.columns[2]
@@ -82,11 +90,7 @@ for i, teacher in kurs_file.iterrows():
 
 final_config["teachers"] = teachers_config
 
-config_dir = os.getcwd()
-path = input(f"Root for result config [{config_dir}]:")
-if path != "":
-    config_dir = path
-with open(os.path.join(config_dir, "../testData/csv_config2021.json"), 'w', encoding="UTF-16") as f:
+with open(json_path, 'w', encoding="UTF-8") as f:
     json.dump(final_config, f, indent=4, sort_keys=True, ensure_ascii=False)
 
 logging.info("Done")

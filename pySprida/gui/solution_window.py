@@ -67,6 +67,11 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                         return QtGui.QColor("#d95f5f")
                     else:
                         return QtGui.QColor("#ff7070")
+                elif value < 0:
+                    if second_col:
+                        return QtGui.QColor("#d95f5f")
+                    else:
+                        return QtGui.QColor("#ff7070")
                 elif value == 3:
                     if second_col:
                         return QtGui.QColor("#d4c23d")

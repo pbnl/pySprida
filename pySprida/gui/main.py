@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main.ui'
+# Form implementation generated from reading ui file '/home/paul/PycharmProjects/pySprida/pySprida/gui/main.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.1
 #
@@ -52,16 +52,16 @@ class Ui_MainWindow(object):
         self.label_6.setGeometry(QtCore.QRect(190, 500, 58, 18))
         self.label_6.setObjectName("label_6")
         self.status = QtWidgets.QLabel(self.centralwidget)
-        self.status.setGeometry(QtCore.QRect(260, 440, 58, 18))
+        self.status.setGeometry(QtCore.QRect(260, 440, 531, 18))
         self.status.setObjectName("status")
         self.solution_type = QtWidgets.QLabel(self.centralwidget)
-        self.solution_type.setGeometry(QtCore.QRect(260, 460, 58, 18))
+        self.solution_type.setGeometry(QtCore.QRect(260, 460, 531, 18))
         self.solution_type.setObjectName("solution_type")
         self.solution_value = QtWidgets.QLabel(self.centralwidget)
-        self.solution_value.setGeometry(QtCore.QRect(260, 480, 91, 18))
+        self.solution_value.setGeometry(QtCore.QRect(260, 480, 201, 18))
         self.solution_value.setObjectName("solution_value")
         self.ub_value = QtWidgets.QLabel(self.centralwidget)
-        self.ub_value.setGeometry(QtCore.QRect(260, 500, 91, 18))
+        self.ub_value.setGeometry(QtCore.QRect(260, 500, 231, 18))
         self.ub_value.setObjectName("ub_value")
         self.loss_progress = QtWidgets.QProgressBar(self.centralwidget)
         self.loss_progress.setGeometry(QtCore.QRect(190, 520, 291, 23))

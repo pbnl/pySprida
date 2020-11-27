@@ -3,12 +3,24 @@ from pathlib import Path
 from PyQt5 import QtWidgets, uic, QtCore
 import sys
 
+from PyQt5.QtWidgets import QMessageBox
+from mip import OptimizationStatus
+
 from pySprida.data.dataContainer import DataContainer
 from pySprida.data.lpData import LPData
 from pySprida.gui.lpSolverWindow import LPSolverWindow
 from pySprida.gui.main import Ui_MainWindow
 from pySprida.gui.solution_window import SolutionWindow
 from pySprida.solver.lpSolver import LPSolver
+
+
+def info_ok_box(text, name="Info"):
+    msgBox = QMessageBox()
+    msgBox.setIcon(QMessageBox.Information)
+    msgBox.setText(text)
+    msgBox.setWindowTitle(name)
+    msgBox.setStandardButtons(QMessageBox.Ok)
+    msgBox.exec()
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -24,17 +36,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.generate_button.clicked.connect(self.generate)
         self.ui.solver_edit_button.clicked.connect(self.open_solver_edit_window)
 
-        self.load_debug_data()
+        self.container = None
+        #self.load_debug_data()
 
     def select_config_file(self):
         data_path, _ = QtWidgets.QFileDialog.getOpenFileName(
-            None, 'Open File', r"/home/paul/PycharmProjects/pySprida/testData", '*.json')
+            None, 'Open File', r"/home/paul/Dokumente/Pfadfinder/Schulung/Schulungen/20_21/stundenplan/Pläne vom 16.11/", '*.json')
         self.ui.config_path.setText(data_path)
 
     def load_config(self):
         path = self.ui.config_path.text()
         self.container = DataContainer()
-        self.container.load_data(Path(path))
+        try:
+            self.container.load_data(Path(path))
+        except (IsADirectoryError, FileNotFoundError):
+            info_ok_box(f"File {str(path)} was not found!")
         self.load_preview_data()
 
     def load_preview_data(self):
@@ -49,6 +65,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.subject_list.addItem(subject_type.name)
 
     def generate(self):
+        if self.container is None:
+            info_ok_box("Load some data first")
+            return
         solver = self.ui.solver_selector.currentText()
         if solver == "LP":
             problem = LPData(self.container)
@@ -59,6 +78,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.generate_button.setDisabled(True)
             self.ui.status.setText("Working")
         else:
+            info_ok_box(f"No solver with the name: {str(solver)}")
             raise Exception("Wrong solver")
 
     def show_solution(self, solution):
@@ -73,9 +93,13 @@ class MainWindow(QtWidgets.QMainWindow):
         if solution.loss:
             self.ui.loss_progress.setValue(solution.loss)
             self.ui.solution_value.setText(str(solution.loss))
-
-        self.solution_window = SolutionWindow(solution, self.container)
-        self.solution_window.show()
+        if solution.status == OptimizationStatus.FEASIBLE or solution.status == OptimizationStatus.OPTIMAL:
+            self.solution_window = SolutionWindow(solution, self.container)
+            self.solution_window.show()
+        else:
+            self.ui.ub_value.setText("-")
+            self.ui.solution_value.setText("-")
+            self.ui.loss_progress.setValue(0)
 
     def set_solver_status(self):
         print("Test")
@@ -85,5 +109,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.load_config()
 
     def open_solver_edit_window(self):
+        if self.container is None:
+            info_ok_box("Load some data first")
+            return
         self.lp_edit_window = LPSolverWindow(self.container)
         self.lp_edit_window.show()

@@ -44,10 +44,14 @@ class Solution:
     @property
     def status_name(self):
         if self.status == mip.OptimizationStatus.OPTIMAL:
-            return "Optimal"
+            return "Optimal: Best solution found"
         elif self.status == mip.OptimizationStatus.FEASIBLE:
-            return "Feasible"
+            return "Feasible: Good solution found. But I maybe find better one with mor time."
         elif self.status == mip.OptimizationStatus.INFEASIBLE:
             return "There is no solution"
+        elif self.status == mip.OptimizationStatus.INT_INFEASIBLE:
+            return "There is just a solution for the relaxed problem"
+        elif self.status == mip.OptimizationStatus.NO_SOLUTION_FOUND:
+            return "No integer feasible solution was found: Maybe I need more time"
         else:
             return "Error"
