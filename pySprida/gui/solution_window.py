@@ -163,7 +163,9 @@ class ColoredMappingTableView(QTableView):
                      Qt.Key_3,
                      Qt.Key_4,
                      Qt.Key_5,
-                     Qt.Key_R]
+                     Qt.Key_R,
+                     Qt.Key_N,
+                     Qt.Key_Y]
 
     def ajust_size(self):
         self.setRowHeight(0, 1)
@@ -188,9 +190,10 @@ class ColoredMappingTableView(QTableView):
         return QTableView.event(self, event)
 
     def adjust_pref(self, key):
-        print(key)
-        if key == 4:
+        if key == Qt.Key_N:
             pref = -1
+        elif key == Qt.Key_Y:
+            pref = 6
         else:
             pref = self.keys.index(key) + 1
         selected = self.selectedIndexes()[0]

@@ -50,7 +50,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.solution is None:
             info_ok_box("Generate a solution first")
             return
-        name = QFileDialog.getSaveFileName(self, 'Save File', "a_name.xlsx", "*.xlsx")[0]
+        name = QFileDialog.getSaveFileName(self, 'Save File', "/home/pauli/Dokumente/Pfadfinder/Schulung_neu/Schulungen/21/Stunde- und Raumplan/erste Pläne vom 12.04/", "*.xlsx")[0]
         workbook = xlsxwriter.Workbook(name)
         worksheet = workbook.add_worksheet()
         mapping_matrix = self.solution.get_mapping_matrix()
@@ -82,7 +82,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def select_config_file(self):
         data_path, _ = QtWidgets.QFileDialog.getOpenFileName(
-            None, 'Open File', r"/home/paul/Dokumente/Pfadfinder/Schulung/Schulungen/20_21/stundenplan/Pläne vom 28.11/Plänedateien/", '*.json')
+            None, 'Open File', r"/home/pauli/Dokumente/Pfadfinder/Schulung_neu/Schulungen/21/Stunde- und Raumplan/erste Pläne vom 12.04/", '*.json')
         self.ui.config_path.setText(data_path)
 
     def load_config(self):
