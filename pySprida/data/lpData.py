@@ -65,6 +65,16 @@ class LPData:
         lessons = lessons.reshape(-1)
         return lessons
 
+    def get_min_time(self):
+        min_lessons = np.zeros(0)
+        for teacher in self._data_container.teachers:
+            min_lessons = np.append(min_lessons, teacher.min_lessons)
+        return min_lessons
+
+    def get_unadjusted_preferences(self):
+        preferences = self._data_container.updated_pref.reshape(-1)
+        return preferences
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

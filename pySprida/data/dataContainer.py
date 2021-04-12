@@ -96,7 +96,8 @@ class DataContainer:
                 preferences=teacher["preferences"],
                 max_lessons=teacher["maxLessons"],
                 co_ref=bool(teacher["coRef"]),
-                woman=bool(teacher["woman"])
+                woman=bool(teacher["woman"]),
+                min_lessons=teacher.get("min_lessons", 0)
             ))
 
     @property

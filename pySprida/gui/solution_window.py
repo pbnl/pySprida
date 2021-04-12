@@ -67,11 +67,21 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                         return QtGui.QColor("#d95f5f")
                     else:
                         return QtGui.QColor("#ff7070")
-                elif value < 0:
+                elif value == 6:
+                    if second_col:
+                        return QtGui.QColor("#f542ef")
+                    else:
+                        return QtGui.QColor("#9e289a")
+                elif value == 0:
                     if second_col:
                         return QtGui.QColor("#d95f5f")
                     else:
                         return QtGui.QColor("#ff7070")
+                elif value == -1:
+                    if second_col:
+                        return QtGui.QColor("#000000")
+                    else:
+                        return QtGui.QColor("#000000")
                 elif value == 3:
                     if second_col:
                         return QtGui.QColor("#d4c23d")
@@ -153,7 +163,9 @@ class ColoredMappingTableView(QTableView):
                      Qt.Key_3,
                      Qt.Key_4,
                      Qt.Key_5,
-                     Qt.Key_R]
+                     Qt.Key_R,
+                     Qt.Key_N,
+                     Qt.Key_Y]
 
     def ajust_size(self):
         self.setRowHeight(0, 1)
@@ -178,7 +190,12 @@ class ColoredMappingTableView(QTableView):
         return QTableView.event(self, event)
 
     def adjust_pref(self, key):
-        pref = self.keys.index(key) + 1
+        if key == Qt.Key_N:
+            pref = -1
+        elif key == Qt.Key_Y:
+            pref = 6
+        else:
+            pref = self.keys.index(key) + 1
         selected = self.selectedIndexes()[0]
         row = selected.row()
         col = selected.column()
