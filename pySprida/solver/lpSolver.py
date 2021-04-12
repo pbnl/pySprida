@@ -116,7 +116,7 @@ class LPSolver(Solver):
                 self.m += mip.xsum([y[j * numGroups * numSubjects + i] * ref_man[j] for j in range(numTeacher)]) >= 1
                 self.m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
 
-        #constraint prios
+        # constraint prios
         # set target
         preferences = self.problem.get_preferences()
         unadjusted_preferences = self.problem.get_unadjusted_preferences()
@@ -130,12 +130,12 @@ class LPSolver(Solver):
                                                            + num_subject_bounds))
         self.m.objective = mip.maximize(target)
 
-        #never ever constraint
+        # never ever constraint
         for i, unadjusted_preference in enumerate(unadjusted_preferences):
             if unadjusted_preference == -1:
                 self.m += y[i] == 0
 
-        #ever constraint
+        # ever constraint
         for i, unadjusted_preference in enumerate(unadjusted_preferences):
             if unadjusted_preference == 6:
                 self.m += y[i] == 1
