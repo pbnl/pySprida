@@ -48,6 +48,13 @@ class LPSolver(Solver):
             self.m += mip.xsum([y[i * numGroups * numSubjects + j] * lessons[j]
                                 for j in range(numGroups * numSubjects)]) <= max_lessons[i]
 
+        # min lessons
+        min_lessons = self.problem.get_min_time()
+        lessons = self.problem.get_lessons_per_subject()
+        for i in range(numTeacher):
+            self.m += mip.xsum([y[i * numGroups * numSubjects + j] * lessons[j]
+                                for j in range(numGroups * numSubjects)]) >= min_lessons[i]
+
         # equal lessons in one subject
         idx = 0
         for subi in range(numSubjects):
@@ -109,9 +116,10 @@ class LPSolver(Solver):
                 self.m += mip.xsum([y[j * numGroups * numSubjects + i] * ref_man[j] for j in range(numTeacher)]) >= 1
                 self.m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
 
-        # constraint prios
+        #constraint prios
         # set target
         preferences = self.problem.get_preferences()
+        unadjusted_preferences = self.problem.get_unadjusted_preferences()
         lesson_diff_weights = np.zeros((num_lessons_bounds))
         lesson_diff_weights[:] = self.config["equal_lesson_weight"]
         subject_diff_weights = np.zeros((num_subject_bounds))
@@ -121,6 +129,16 @@ class LPSolver(Solver):
                                                            + num_lessons_bounds
                                                            + num_subject_bounds))
         self.m.objective = mip.maximize(target)
+
+        #never ever constraint
+        for i, unadjusted_preference in enumerate(unadjusted_preferences):
+            if unadjusted_preference == -1:
+                self.m += y[i] == 0
+
+        #ever constraint
+        for i, unadjusted_preference in enumerate(unadjusted_preferences):
+            if unadjusted_preference == 6:
+                self.m += y[i] == 1
 
         status = self.m.optimize(max_seconds=self.config["max_time"])
         if status == mip.OptimizationStatus.OPTIMAL:
