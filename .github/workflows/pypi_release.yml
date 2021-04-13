@@ -25,11 +25,8 @@ jobs:
       run: >-
         python setup.py sdist bdist_wheel
 
-    - name: Build2
-      run: >-
-        echo ${{ secrets.pypi_password }}
-
     - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
-        password: ${{ secrets.pypi_password }}
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
