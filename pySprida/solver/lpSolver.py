@@ -20,6 +20,8 @@ class LPSolver(Solver):
     def solve(self) -> Solution:
         self.m = mip.Model(sense=mip.MAXIMIZE, solver_name=mip.CBC)
 
+        self.m.threads = -1
+
         # create variables
         numTeacher = self.problem.get_num_teche()
         numGroups = self.problem.get_num_groups()
