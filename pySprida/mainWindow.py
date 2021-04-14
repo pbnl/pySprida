@@ -90,10 +90,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.config_path.setText(data_path)
 
     def load_config(self):
-
-
-
-
         path = self.ui.config_path.text()
         self.container = DataContainer()
         try:
