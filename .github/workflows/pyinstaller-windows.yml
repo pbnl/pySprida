@@ -10,12 +10,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: PyInstaller Windows
-      uses: JackMcKew/pyinstaller-action-windows@main
+      uses: NKPmedia/pyinstaller-action-windows@main
       with:
-        path: src
+        path: .
+        spec: main.spec
+        requirements: requirements/install.txt
 
     - uses: actions/upload-artifact@v2
       with:
         name: pySprida
         path: src/dist/windows # or path/to/artifact
-        spec: main.spec
