@@ -33,9 +33,9 @@ jobs:
           ./scripts/main.py
 
     - name: LS
-      run: ls
+      run: ls dist
 
     - uses: actions/upload-artifact@v2
       with:
         name: linux
-        path: build
+        path: dist
