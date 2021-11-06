@@ -1,20 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
-import mip
-from os.path import dirname
-pathmip = dirname(mip.__file__)
-mippathlib = os.path.join(pathmip, "libraries")
+
 
 a = Analysis(['scripts/main.py'],
-             pathex=['pySprida'],
-             binaries=[
-             (f"{mippathlib}/win64/*",
-              'mip/libraries/win64'),
-              (f"{mippathlib}/lin64/*",
-               'mip/libraries/lin64/'),
-               (f"{mippathlib}/*",
-                'mip/libraries')],
+             pathex=['/home/pauli/PycharmProjects/pySprida'],
+             binaries=[('/home/pauli/.conda/envs/pySprida/lib/python3.8/site-packages/mip/libraries/win64/*', 'mip/libraries/win64'), ('/home/pauli/.conda/envs/pySprida/lib/python3.8/site-packages/mip/libraries/lin64/*', 'mip/libraries/lin64/'), ('/home/pauli/.conda/envs/pySprida/lib/python3.8/site-packages/mip/libraries/cbc-c-darwin-x86-64.dylib', 'mip/libraries')],
              datas=[],
              hiddenimports=[],
              hookspath=[],
@@ -43,4 +34,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='pySprida')
+               name='main')
