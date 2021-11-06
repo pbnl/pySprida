@@ -25,7 +25,7 @@ jobs:
         pip install --no-deps .
     - name: PyInstaller
       run: |
-        python -m pyinstaller -y\
+        python -m PyInstaller -y\
           --add-binary\
           "/home/wd/.conda/envs/pySprida/lib/python3.8/site-packages/mip/libraries/win64/*:mip/libraries/win64"\
           --add-binary\
