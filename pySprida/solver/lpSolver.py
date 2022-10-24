@@ -56,9 +56,9 @@ class LPSolver(Solver):
         for i in range(numTeacher):
             for j in range(numGroups):
                 tmp = [-0.00001 * y[numGroups * numSubjects * i +
-                      subId * numGroups +
-                      j
-                      ] for subId in range(numSubjects)]
+                                    subId * numGroups +
+                                    j
+                                    ] for subId in range(numSubjects)]
                 tmp.append(y[group_restriction_start_idx +
                              i * numGroups +
                              j])
@@ -187,4 +187,4 @@ class LPSolver(Solver):
                         loss=self.m.objective_value,
                         status=status,
                         relaxed_loss=self.m.objective_bound,
-                        selected_groups = selected_groups)
+                        selected_groups=selected_groups)

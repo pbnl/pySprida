@@ -29,4 +29,3 @@ class TeacherSolutionWindow(QMainWindow):
             self.ui.selected_groups.setItem(0, n, newitem)
             self.ui.selected_groups.setColumnWidth(n, 10)
         self.ui.selected_groups.setHorizontalHeaderLabels(group_names)
-
