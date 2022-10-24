@@ -15,15 +15,7 @@ from pySprida.gui.lpSolverWindow import LPSolverWindow
 from pySprida.gui.main import Ui_MainWindow
 from pySprida.gui.solution_window import SolutionWindow
 from pySprida.solver.lpSolver import LPSolver
-
-
-def info_ok_box(text, name="Info"):
-    msgBox = QMessageBox()
-    msgBox.setIcon(QMessageBox.Information)
-    msgBox.setText(text)
-    msgBox.setWindowTitle(name)
-    msgBox.setStandardButtons(QMessageBox.Ok)
-    msgBox.exec()
+from pySprida.utils import info_ok_box
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -139,14 +131,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def update_solution(self, solution):
         self.container.last_solution = solution
-        if solution.status == OptimizationStatus.FEASIBLE or solution.status == OptimizationStatus.OPTIMAL:
-            self.ui.view_solution.setDisabled(False)
-            self.show_solution()
-        else:
-            self.ui.view_solution.setDisabled(True)
-
-    def show_solution(self):
-        solution = self.container.last_solution
         self.ui.generate_button.setText("Generate")
         self.ui.generate_button.setDisabled(False)
         self.ui.status.setText("Finished")
@@ -159,12 +143,17 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.loss_progress.setValue(solution.loss)
             self.ui.solution_value.setText(str(solution.loss))
         if solution.status == OptimizationStatus.FEASIBLE or solution.status == OptimizationStatus.OPTIMAL:
-            self.solution_window = SolutionWindow(self.container)
-            self.solution_window.show()
+            self.show_solution()
         else:
             self.ui.ub_value.setText("-")
             self.ui.solution_value.setText("-")
             self.ui.loss_progress.setValue(0)
+        self.ui.view_solution.setDisabled(False)
+
+    def show_solution(self):
+        solution = self.container.last_solution
+        self.solution_window = SolutionWindow(self.container)
+        self.solution_window.show()
 
     def set_solver_status(self):
         print("Test")

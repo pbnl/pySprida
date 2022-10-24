@@ -53,12 +53,13 @@ class LPSolver(Solver):
         for i in range(numTeacher):
             group_counter = 0
             for group_name, num_groups_of_type in num_groups_per_type.items():
-                if group_name in self.config.get("restrictedGroupTypes", []):
+                max_groups_per_grouptype = self.config.get("max_groups_per_groupType", {}).get(group_name, num_groups_per_type[group_name])
+                if max_groups_per_grouptype != num_groups_per_type[group_name]:
                     self.m += mip.xsum([
                         y[group_restriction_start_idx +
                           i * numGroups +
                           group_counter + j
-                          ] for j in range(num_groups_of_type)]) == 1
+                          ] for j in range(num_groups_of_type)]) == max_groups_per_grouptype
                 # 0 is "do not select this group"; Select just one group per
                 # teacher per group type
                 group_counter += num_groups_of_type
