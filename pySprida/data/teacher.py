@@ -5,7 +5,16 @@ from pySprida.data.groupType import GroupType
 
 
 class Teacher:
-    def __init__(self, container, name, short_name, preferences, max_lessons, woman, co_ref, min_lessons):
+    def __init__(
+            self,
+            container,
+            name,
+            short_name,
+            preferences,
+            max_lessons,
+            woman,
+            co_ref,
+            min_lessons):
         self.min_lessons: int = min_lessons
         self.name: str = name
         self.short_name: str = short_name

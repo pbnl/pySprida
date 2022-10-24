@@ -49,7 +49,16 @@ class Ui_LPSolverEdit(object):
 
     def retranslateUi(self, LPSolverEdit):
         _translate = QtCore.QCoreApplication.translate
-        LPSolverEdit.setWindowTitle(_translate("LPSolverEdit", "LP Solver Edit"))
+        LPSolverEdit.setWindowTitle(
+            _translate(
+                "LPSolverEdit",
+                "LP Solver Edit"))
         self.label.setText(_translate("LPSolverEdit", "Max time (sec)"))
-        self.label_2.setText(_translate("LPSolverEdit", "Equal lessons weight"))
-        self.label_3.setText(_translate("LPSolverEdit", "Equal subjects weight"))
+        self.label_2.setText(
+            _translate(
+                "LPSolverEdit",
+                "Equal lessons weight"))
+        self.label_3.setText(
+            _translate(
+                "LPSolverEdit",
+                "Equal subjects weight"))

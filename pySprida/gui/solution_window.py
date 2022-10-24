@@ -37,10 +37,12 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                 if index.column() == 0:
                     return "Num"
                 else:
-                    return self._subject_names[(index.column() - 1) // len(self._group_names)]
+                    return self._subject_names[(
+                        index.column() - 1) // len(self._group_names)]
             elif index.row() == 1:
                 if index.column() > 0:
-                    return self._group_names[(index.column() - 1) % len(self._group_names)]
+                    return self._group_names[(
+                        index.column() - 1) % len(self._group_names)]
             else:
                 if index.column() == 0:
                     return str(self._num_lessons[index.row() - 2])
@@ -127,7 +129,9 @@ class StyleDelegateForQTableWidget(QStyledItemDelegate):
     def paint(self, painter, option, index):
         if option.state & QStyle.State_Selected:
             option.palette.setColor(QPalette.HighlightedText, Qt.black)
-            color = self.combineColors(self.color_default, self.background(option, index))
+            color = self.combineColors(
+                self.color_default, self.background(
+                    option, index))
             option.palette.setColor(QPalette.Highlight, color)
         QStyledItemDelegate.paint(self, painter, option, index)
 
@@ -162,7 +166,8 @@ class ColoredMappingTableView(QTableView):
 
         self.setItemDelegate(StyleDelegateForQTableWidget(self))
 
-        self.verticalHeader().sectionDoubleClicked.connect(self.handleVerticalHeaderDoubleClick)
+        self.verticalHeader().sectionDoubleClicked.connect(
+            self.handleVerticalHeaderDoubleClick)
 
         self.keys = [Qt.Key_1,
                      Qt.Key_2,
@@ -175,7 +180,8 @@ class ColoredMappingTableView(QTableView):
 
     def handleVerticalHeaderDoubleClick(self, index) -> None:
         if index > 0:
-            self.teacher_solution_window = TeacherSolutionWindow(self._data_container, index - 2)
+            self.teacher_solution_window = TeacherSolutionWindow(
+                self._data_container, index - 2)
             self.teacher_solution_window.show()
 
     def ajust_size(self):
@@ -246,6 +252,13 @@ if __name__ == "__main__":
     printer.printGroups(container)
 
     app = QtWidgets.QApplication(sys.argv)
-    window = SolutionWindow(Solution(np.random.randint(0, 2, (15 * 11 * 3)), container), container)
+    window = SolutionWindow(
+        Solution(
+            np.random.randint(
+                0,
+                2,
+                (15 * 11 * 3)),
+            container),
+        container)
     window.show()
     app.exec_()

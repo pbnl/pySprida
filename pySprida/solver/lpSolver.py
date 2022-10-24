@@ -15,7 +15,8 @@ class LPSolver(Solver):
         self.problem: LPData = problem
         self.config = data_container.solver_config["lp"]
         if not isinstance(problem, LPData):
-            raise AttributeError("LPSolver does only support LPData as a problem")
+            raise AttributeError(
+                "LPSolver does only support LPData as a problem")
 
     def solve(self) -> Solution:
         self.m = mip.Model(sense=mip.MAXIMIZE, solver_name=mip.CBC)
@@ -28,15 +29,24 @@ class LPSolver(Solver):
         numSubjects = self.problem.get_num_subjects()
         numGroupTypes = self.problem.get_num_group_types()
 
-        y = [self.m.add_var(var_type=mip.BINARY) for i in range(numTeacher * numGroups * numSubjects)]
+        y = [
+            self.m.add_var(
+                var_type=mip.BINARY) for i in range(
+                numTeacher *
+                numGroups *
+                numSubjects)]
         lessons_bound_start_idx = len(y)
         num_lessons_bounds = int((numTeacher * (numTeacher - 1)) / 2)
-        y.extend([self.m.add_var(var_type=mip.CONTINUOUS) for i in range(num_lessons_bounds)])
+        y.extend([self.m.add_var(var_type=mip.CONTINUOUS)
+                  for i in range(num_lessons_bounds)])
         subject_bound_start_idx = len(y)
-        num_subject_bounds = int((numTeacher * (numTeacher - 1)) / 2) * numSubjects
-        y.extend([self.m.add_var(var_type=mip.CONTINUOUS) for i in range(num_subject_bounds)])
+        num_subject_bounds = int(
+            (numTeacher * (numTeacher - 1)) / 2) * numSubjects
+        y.extend([self.m.add_var(var_type=mip.CONTINUOUS)
+                  for i in range(num_subject_bounds)])
         group_restriction_start_idx = len(y)
-        y.extend([self.m.add_var(var_type=mip.BINARY) for i in range(numTeacher * numGroups)])
+        y.extend([self.m.add_var(var_type=mip.BINARY)
+                  for i in range(numTeacher * numGroups)])
 
         # restrict max one group of each type per teacher
         num_groups_per_type = self.problem.get_num_groups_per_type()
@@ -49,7 +59,8 @@ class LPSolver(Solver):
                           i * numGroups +
                           group_counter + j
                           ] for j in range(num_groups_of_type)]) == 1
-                # 0 is "do not select this group"; Select just one group per teacher per group type
+                # 0 is "do not select this group"; Select just one group per
+                # teacher per group type
                 group_counter += num_groups_of_type
 
         # restrict max one group of each type per teacher
@@ -92,11 +103,19 @@ class LPSolver(Solver):
             for i in range(numTeacher):
                 for j in range(i):
                     if i != j:
-                        self.m += (mip.xsum([y[i * numGroups * numSubjects + subi * numSubjects + k]
-                                             for k in range(numGroups)])
-                                   -
-                                   mip.xsum([y[j * numGroups * numSubjects + subi * numSubjects + k]
-                                             for k in range(numGroups)])) <= y[subject_bound_start_idx + idx]
+                        self.m += (mip.xsum([y[i *
+                                               numGroups *
+                                               numSubjects +
+                                               subi *
+                                               numSubjects +
+                                               k] for k in range(numGroups)]) -
+                                   mip.xsum([y[j *
+                                               numGroups *
+                                               numSubjects +
+                                               subi *
+                                               numSubjects +
+                                               k] for k in range(numGroups)])) <= y[subject_bound_start_idx +
+                                                                                    idx]
                         self.m += -(mip.xsum([y[i * numGroups * numSubjects + subi * numSubjects + k]
                                               for k in range(numGroups * numSubjects)])
                                     -
@@ -109,11 +128,19 @@ class LPSolver(Solver):
         for i in range(numTeacher):
             for j in range(i):
                 if i != j:
-                    self.m += (mip.xsum([y[i * numGroups * numSubjects + k] * lessons[k]
-                                         for k in range(numGroups * numSubjects)])
-                               -
-                               mip.xsum([y[j * numGroups * numSubjects + k] * lessons[k]
-                                         for k in range(numGroups * numSubjects)])) <= y[lessons_bound_start_idx + idx]
+                    self.m += (mip.xsum([y[i *
+                                           numGroups *
+                                           numSubjects +
+                                           k] *
+                                         lessons[k] for k in range(numGroups *
+                                                                   numSubjects)]) -
+                               mip.xsum([y[j *
+                                           numGroups *
+                                           numSubjects +
+                                           k] *
+                                         lessons[k] for k in range(numGroups *
+                                                                   numSubjects)])) <= y[lessons_bound_start_idx +
+                                                                                        idx]
                     self.m += -(mip.xsum([y[i * numGroups * numSubjects + k] * lessons[k]
                                           for k in range(numGroups * numSubjects)])
                                 -
@@ -127,14 +154,19 @@ class LPSolver(Solver):
         praev_idx = self.data_container.get_subject_names()
         praev_idx = praev_idx.index("Praevention")
         num_groups = self.data_container.num_groups
-        praevention_ids = [i for i in range(praev_idx * num_groups, (praev_idx + 1) * numGroups)]
+        praevention_ids = [
+            i for i in range(
+                praev_idx * num_groups,
+                (praev_idx + 1) * numGroups)]
         for i in range(numGroups * numSubjects):
             if lessonExisting[i] and i not in praevention_ids:
-                self.m += mip.xsum([y[j * numGroups * numSubjects + i] * ref[j] for j in range(numTeacher)]) == 1
+                self.m += mip.xsum([y[j * numGroups * numSubjects + i] * ref[j]
+                                    for j in range(numTeacher)]) == 1
 
         for i in range(numGroups * numSubjects):
             if lessonExisting[i] and i not in praevention_ids:
-                self.m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
+                self.m += mip.xsum([y[j * numGroups * numSubjects + i]
+                                    for j in range(numTeacher)]) <= 2
 
         # Prävention stuff
         ref_woman_old = self.data_container.get_teacher_woman()
@@ -143,9 +175,12 @@ class LPSolver(Solver):
 
         for i in range(numGroups * numSubjects):
             if lessonExisting[i] and i in praevention_ids:
-                self.m += mip.xsum([y[j * numGroups * numSubjects + i] * ref_woman[j] for j in range(numTeacher)]) >= 1
-                self.m += mip.xsum([y[j * numGroups * numSubjects + i] * ref_man[j] for j in range(numTeacher)]) >= 1
-                self.m += mip.xsum([y[j * numGroups * numSubjects + i] for j in range(numTeacher)]) <= 2
+                self.m += mip.xsum([y[j * numGroups * numSubjects + i]
+                                    * ref_woman[j] for j in range(numTeacher)]) >= 1
+                self.m += mip.xsum([y[j * numGroups * numSubjects + i]
+                                    * ref_man[j] for j in range(numTeacher)]) >= 1
+                self.m += mip.xsum([y[j * numGroups * numSubjects + i]
+                                    for j in range(numTeacher)]) <= 2
 
         # constraint prios
         # set target
@@ -155,10 +190,16 @@ class LPSolver(Solver):
         lesson_diff_weights[:] = self.config["equal_lesson_weight"]
         subject_diff_weights = np.zeros((num_subject_bounds))
         subject_diff_weights[:] = self.config["equal_subject_weight"]
-        weights = np.concatenate((preferences, lesson_diff_weights, subject_diff_weights))
-        target = mip.xsum(y[i] * weights[i] for i in range(numTeacher * numGroups * numSubjects
-                                                           + num_lessons_bounds
-                                                           + num_subject_bounds))
+        weights = np.concatenate(
+            (preferences, lesson_diff_weights, subject_diff_weights))
+        target = mip.xsum(
+            y[i] *
+            weights[i] for i in range(
+                numTeacher *
+                numGroups *
+                numSubjects +
+                num_lessons_bounds +
+                num_subject_bounds))
         self.m.objective = mip.maximize(target)
 
         # never ever constraint
@@ -173,16 +214,22 @@ class LPSolver(Solver):
 
         status = self.m.optimize(max_seconds=self.config["max_time"])
         if status == mip.OptimizationStatus.OPTIMAL:
-            print('optimal solution cost {} found'.format(self.m.objective_value))
+            print(
+                'optimal solution cost {} found'.format(
+                    self.m.objective_value))
         elif status == mip.OptimizationStatus.FEASIBLE:
-            print('sol.cost {} found, best possible: {}'.format(self.m.objective_value, self.m.objective_bound))
+            print('sol.cost {} found, best possible: {}'.format(
+                self.m.objective_value, self.m.objective_bound))
         elif status == mip.OptimizationStatus.NO_SOLUTION_FOUND:
-            print('no feasible solution found, lower bound is: {}'.format(self.m.objective_bound))
+            print(
+                'no feasible solution found, lower bound is: {}'.format(
+                    self.m.objective_bound))
         if status == mip.OptimizationStatus.OPTIMAL or status == mip.OptimizationStatus.FEASIBLE:
             print(f"solution: {status}")
 
         sol = np.array([v.x for v in self.m.vars[:lessons_bound_start_idx]])
-        selected_groups = np.array([v.x for v in self.m.vars[group_restriction_start_idx:]])
+        selected_groups = np.array(
+            [v.x for v in self.m.vars[group_restriction_start_idx:]])
         return Solution(sol, self.data_container,
                         loss=self.m.objective_value,
                         status=status,

@@ -51,11 +51,16 @@ class DataContainer:
             self.updated_pref = self.get_preference_matrix()
 
         if "last_solution" in self._data:
-            self.last_solution = Solution(np.array(self._data["last_solution"]["solution"]), self,
-                                          self._data["last_solution"]["loss"],
-                                          OptimizationStatus(self._data["last_solution"]["status"]),
-                                          self._data["last_solution"]["relaxed_loss"],
-                                          np.array(self._data["last_solution"]["selected_groups"]))
+            self.last_solution = Solution(
+                np.array(
+                    self._data["last_solution"]["solution"]),
+                self,
+                self._data["last_solution"]["loss"],
+                OptimizationStatus(
+                    self._data["last_solution"]["status"]),
+                self._data["last_solution"]["relaxed_loss"],
+                np.array(
+                    self._data["last_solution"]["selected_groups"]))
 
     def load_subject_types(self, config):
         subs = config["subjects"]
@@ -130,7 +135,8 @@ class DataContainer:
     def get_preference_matrix(self):
         preferences = np.zeros((self.num_teacher, self.num_cources))
         for i, teacher in enumerate(self.teachers):
-            preferences[i] = np.array(teacher.get_all_subject_preferences()).reshape(-1)
+            preferences[i] = np.array(
+                teacher.get_all_subject_preferences()).reshape(-1)
         return preferences
 
     def get_teacher_names(self):
@@ -168,7 +174,8 @@ class DataContainer:
 
     def to_json(self):
         data = {"config": {}}
-        data["config"]["groupTypes"] = [gtype.name for gtype in self.group_types]
+        data["config"]["groupTypes"] = [
+            gtype.name for gtype in self.group_types]
         num_groups = []
         for gtype in self.group_types:
             num = 0
@@ -213,11 +220,12 @@ class DataContainer:
         data["teachers"] = teachers
         data["updated_preferences"] = self.updated_pref.tolist()
         if self.last_solution:
-            data["last_solution"] = {"solution": self.last_solution.solution_data.tolist(),
-                                     "loss": self.last_solution.loss,
-                                     "status": self.last_solution.status.value,
-                                     "relaxed_loss": self.last_solution.relaxed_loss,
-                                     "selected_groups": self.last_solution.selected_groups.tolist()}
+            data["last_solution"] = {
+                "solution": self.last_solution.solution_data.tolist(),
+                "loss": self.last_solution.loss,
+                "status": self.last_solution.status.value,
+                "relaxed_loss": self.last_solution.relaxed_loss,
+                "selected_groups": self.last_solution.selected_groups.tolist()}
         return data
 
 

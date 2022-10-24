@@ -47,7 +47,9 @@ class LPData:
                     existing.append(True)
                 else:
                     existing.append(False)
-        existing = np.array(existing).reshape(self._data_container.num_groups, self._data_container.num_subjects)
+        existing = np.array(existing).reshape(
+            self._data_container.num_groups,
+            self._data_container.num_subjects)
         existing = np.transpose(existing)
         existing = existing.reshape(-1)
         return existing
@@ -61,7 +63,9 @@ class LPData:
                     lessons.append(0)
                 else:
                     lessons.append(subject.num_lessons)
-        lessons = np.array(lessons).reshape(self._data_container.num_groups, self._data_container.num_subjects)
+        lessons = np.array(lessons).reshape(
+            self._data_container.num_groups,
+            self._data_container.num_subjects)
         lessons = np.transpose(lessons)
         lessons = lessons.reshape(-1)
         return lessons

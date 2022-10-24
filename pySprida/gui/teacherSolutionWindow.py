@@ -7,7 +7,12 @@ from pySprida.gui.teacherSolution import Ui_TeacherSolution
 
 class TeacherSolutionWindow(QMainWindow):
 
-    def __init__(self, container: DataContainer, teacher_id: int, *args, **kwargs):
+    def __init__(
+            self,
+            container: DataContainer,
+            teacher_id: int,
+            *args,
+            **kwargs):
         super().__init__(*args, **kwargs)
 
         self.ui = Ui_TeacherSolution()
@@ -18,7 +23,8 @@ class TeacherSolutionWindow(QMainWindow):
 
     def update_selected_groups(self):
         group_names = self.container.get_group_names()
-        selected_groups = self.container.last_solution.getSelectedGroups(self.teacher_id)
+        selected_groups = self.container.last_solution.getSelectedGroups(
+            self.teacher_id)
         self.ui.selected_groups.setRowCount(1)
         self.ui.selected_groups.setColumnCount(len(group_names))
         for n, key in enumerate(selected_groups):

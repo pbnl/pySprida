@@ -35,10 +35,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.primary_screen = primary_screen
 
-        self.ui.config_path_select_button.clicked.connect(self.select_config_file)
+        self.ui.config_path_select_button.clicked.connect(
+            self.select_config_file)
         self.ui.load_config_button.clicked.connect(self.load_config)
         self.ui.generate_button.clicked.connect(self.generate)
-        self.ui.solver_edit_button.clicked.connect(self.open_solver_edit_window)
+        self.ui.solver_edit_button.clicked.connect(
+            self.open_solver_edit_window)
         self.ui.save_problem_button.clicked.connect(self.save_problem)
         self.ui.export_solution_button.clicked.connect(self.export_solution)
 
@@ -80,10 +82,16 @@ class MainWindow(QtWidgets.QMainWindow):
             info_ok_box("Load some data first")
             return
         json_data = self.container.to_json()
-        name = QFileDialog.getSaveFileName(self, 'Save File', "a_name.json", "*.json")[0]
+        name = QFileDialog.getSaveFileName(
+            self, 'Save File', "a_name.json", "*.json")[0]
         if name:
             with open(name, 'w', encoding="UTF-8") as f:
-                json.dump(json_data, f, indent=4, sort_keys=True, ensure_ascii=False)
+                json.dump(
+                    json_data,
+                    f,
+                    indent=4,
+                    sort_keys=True,
+                    ensure_ascii=False)
 
     def select_config_file(self):
         data_path, _ = QtWidgets.QFileDialog.getOpenFileName(
@@ -162,7 +170,8 @@ class MainWindow(QtWidgets.QMainWindow):
         print("Test")
 
     def load_debug_data(self):
-        self.ui.config_path.setText(r"/home/paul/PycharmProjects/pySprida/testData/csv_config2021.json")
+        self.ui.config_path.setText(
+            r"/home/paul/PycharmProjects/pySprida/testData/csv_config2021.json")
         self.load_config()
 
     def open_solver_edit_window(self):

@@ -34,8 +34,12 @@ class Solution:
         numSubjects = self._data_container.num_subjects
         lessons = self._data_container.get_lessons_per_subject()
         for i in range(numTeacher):
-            num_lessons.append(sum([self.solution_data[i * numGroups * numSubjects + j] * lessons[j]
-                                    for j in range(numGroups * numSubjects)]))
+            num_lessons.append(sum([self.solution_data[i *
+                                                       numGroups *
+                                                       numSubjects +
+                                                       j] *
+                                    lessons[j] for j in range(numGroups *
+                                                              numSubjects)]))
         return np.array(num_lessons)
 
     @property
@@ -55,4 +59,7 @@ class Solution:
 
     def getSelectedGroups(self, teacher_id: int):
         numGroups = self._data_container.num_groups
-        return self.selected_groups[teacher_id * numGroups: teacher_id * numGroups + numGroups].tolist()
+        return self.selected_groups[teacher_id *
+                                    numGroups: teacher_id *
+                                    numGroups +
+                                    numGroups].tolist()

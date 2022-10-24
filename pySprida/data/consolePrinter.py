@@ -10,7 +10,8 @@ class ConsolePrinter:
         table = Texttable()
         table.header(["ID", "Name", ">=3 Subjects"])
         for i, teacher in enumerate(container.teachers):
-            important_subjects = [sub.name for sub in teacher.get_subject_preferences(3)]
+            important_subjects = [
+                sub.name for sub in teacher.get_subject_preferences(3)]
             table.add_row([i, teacher.name, str(important_subjects)])
         print(table.draw())
 
