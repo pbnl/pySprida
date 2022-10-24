@@ -26,6 +26,7 @@ class LPSolver(Solver):
         numTeacher = self.problem.get_num_teche()
         numGroups = self.problem.get_num_groups()
         numSubjects = self.problem.get_num_subjects()
+        numGroupTypes = self.problem.get_num_group_types()
 
         y = [self.m.add_var(var_type=mip.BINARY) for i in range(numTeacher * numGroups * numSubjects)]
         lessons_bound_start_idx = len(y)
@@ -34,6 +35,34 @@ class LPSolver(Solver):
         subject_bound_start_idx = len(y)
         num_subject_bounds = int((numTeacher * (numTeacher - 1)) / 2) * numSubjects
         y.extend([self.m.add_var(var_type=mip.CONTINUOUS) for i in range(num_subject_bounds)])
+        group_restriction_start_idx = len(y)
+        y.extend([self.m.add_var(var_type=mip.BINARY) for i in range(numTeacher * numGroups)])
+
+        # restrict max one group of each type per teacher
+        num_groups_per_type = self.problem.get_num_groups_per_type()
+        for i in range(numTeacher):
+            group_counter = 0
+            for group_name, num_groups_of_type in num_groups_per_type.items():
+                if group_name in ["A", "C"]:
+                    self.m += mip.xsum([
+                        y[group_restriction_start_idx +
+                          i * numGroups +
+                          group_counter + j
+                          ] for j in range(num_groups_of_type)]) == 1
+                # 0 is "do not select this group"; Select just one group per teacher per group type
+                group_counter += num_groups_of_type
+
+        # restrict max one group of each type per teacher
+        for i in range(numTeacher):
+            for j in range(numGroups):
+                tmp = [-0.00001 * y[numGroups * numSubjects * i +
+                      subId * numGroups +
+                      j
+                      ] for subId in range(numSubjects)]
+                tmp.append(y[group_restriction_start_idx +
+                             i * numGroups +
+                             j])
+                self.m += mip.xsum(tmp) >= 0
 
         # constraint group has subject
         lessonExisting = self.problem.lesson_exist_list()
@@ -153,7 +182,9 @@ class LPSolver(Solver):
             print(f"solution: {status}")
 
         sol = np.array([v.x for v in self.m.vars[:lessons_bound_start_idx]])
+        selected_groups = np.array([v.x for v in self.m.vars[group_restriction_start_idx:]])
         return Solution(sol, self.data_container,
                         loss=self.m.objective_value,
                         status=status,
-                        relaxed_loss=self.m.objective_bound)
+                        relaxed_loss=self.m.objective_bound,
+                        selected_groups = selected_groups)

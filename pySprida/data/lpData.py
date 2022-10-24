@@ -86,6 +86,9 @@ class LPData:
         assert len(counters) == len(self._data_container.group_types)
         return counters
 
+    def get_num_group_types(self):
+        return len(self._data_container.group_types)
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

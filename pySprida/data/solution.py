@@ -9,12 +9,14 @@ class Solution:
                  data_container,
                  loss,
                  status,
-                 relaxed_loss):
+                 relaxed_loss,
+                 selected_groups):
         self.solution_data = solution_data
         self._data_container = data_container
         self.loss = loss
         self.status = status
         self.relaxed_loss = relaxed_loss
+        self.selected_groups = selected_groups
 
     def get_mapping_matrix(self):
         num_teacher = self._data_container.num_teacher
@@ -50,3 +52,7 @@ class Solution:
             return "No integer feasible solution was found: Maybe I need more time"
         else:
             return "Error"
+
+    def getSelectedGroups(self, teacher_id: int):
+        numGroups = self._data_container.num_groups
+        return self.selected_groups[teacher_id * numGroups: teacher_id * numGroups + numGroups].tolist()

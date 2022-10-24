@@ -54,7 +54,8 @@ class DataContainer:
             self.last_solution = Solution(np.array(self._data["last_solution"]["solution"]), self,
                                           self._data["last_solution"]["loss"],
                                           OptimizationStatus(self._data["last_solution"]["status"]),
-                                          self._data["last_solution"]["relaxed_loss"])
+                                          self._data["last_solution"]["relaxed_loss"],
+                                          np.array(self._data["last_solution"]["selected_groups"]))
 
     def load_subject_types(self, config):
         subs = config["subjects"]
@@ -215,7 +216,8 @@ class DataContainer:
             data["last_solution"] = {"solution": self.last_solution.solution_data.tolist(),
                                      "loss": self.last_solution.loss,
                                      "status": self.last_solution.status.value,
-                                     "relaxed_loss": self.last_solution.relaxed_loss}
+                                     "relaxed_loss": self.last_solution.relaxed_loss,
+                                     "selected_groups": self.last_solution.selected_groups.tolist()}
         return data
 
 

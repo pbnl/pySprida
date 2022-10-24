@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QTableView, QDesktopWidget, QStyledItemDelegate, QSt
 
 from pySprida.data.dataContainer import DataContainer
 from pySprida.data.solution import Solution
+from pySprida.gui.teacherSolutionWindow import TeacherSolutionWindow
 
 
 class ColoredMappingTableModel(QtCore.QAbstractTableModel):
@@ -47,6 +48,8 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                     return "X"
             return ""
         if role == Qt.BackgroundRole:
+            if index.row() == 0:
+                return QtGui.QColor("#ffffff")
             second_col = ((index.column() - 1) // len(self._group_names)) % 2
             if index.row() == 1:
                 if second_col:
@@ -92,6 +95,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                         return QtGui.QColor("#6fcf3c")
                     else:
                         return QtGui.QColor("#89ff4a")
+                pass
 
     def rowCount(self, index):
         # The length of the outer list.
@@ -158,6 +162,8 @@ class ColoredMappingTableView(QTableView):
 
         self.setItemDelegate(StyleDelegateForQTableWidget(self))
 
+        self.verticalHeader().sectionDoubleClicked.connect(self.handleVerticalHeaderDoubleClick)
+
         self.keys = [Qt.Key_1,
                      Qt.Key_2,
                      Qt.Key_3,
@@ -166,6 +172,11 @@ class ColoredMappingTableView(QTableView):
                      Qt.Key_R,
                      Qt.Key_N,
                      Qt.Key_Y]
+
+    def handleVerticalHeaderDoubleClick(self, index) -> None:
+        if index > 0:
+            self.teacher_solution_window = TeacherSolutionWindow(self._data_container, index - 2)
+            self.teacher_solution_window.show()
 
     def ajust_size(self):
         self.setRowHeight(0, 1)
@@ -230,7 +241,7 @@ if __name__ == "__main__":
     printer = ConsolePrinter()
 
     container = DataContainer()
-    container.load_data(Path("./testData/testProblem.json"))
+    container.load_data(Path("/home/pauli/test_plan.json"))
     printer.printTeachers(container)
     printer.printGroups(container)
 
