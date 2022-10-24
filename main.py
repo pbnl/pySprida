@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets, uic
 import sys
-
 from pySprida.mainWindow import MainWindow
 
 
