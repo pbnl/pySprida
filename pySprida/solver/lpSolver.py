@@ -43,7 +43,7 @@ class LPSolver(Solver):
         for i in range(numTeacher):
             group_counter = 0
             for group_name, num_groups_of_type in num_groups_per_type.items():
-                if group_name in ["A", "C"]:
+                if group_name in self.config.get("restrictedGroupTypes", []):
                     self.m += mip.xsum([
                         y[group_restriction_start_idx +
                           i * numGroups +
