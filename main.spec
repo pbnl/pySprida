@@ -15,7 +15,7 @@ else:
 binaries.append((mip_path+'/libraries/cbc-c-darwin-x86-64.dylib', 'mip/libraries'))
 
 a = Analysis(['scripts/main.py'],
-             pathex=['/home/pauli/PycharmProjects/pySprida'],
+             pathex=["pySprida"],
              binaries=binaries,
              datas=[],
              hiddenimports=[],

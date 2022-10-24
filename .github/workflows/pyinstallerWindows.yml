@@ -15,7 +15,6 @@ jobs:
       with:
         path: .
         spec: main.spec
-        requirements: requirements/install.txt
 
     - uses: actions/upload-artifact@v2
       with:
