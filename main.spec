@@ -1,11 +1,22 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
+import mip
+mip_path = mip.__path__[0]
+print(mip.__path__)
 
+import os
+binaries = []
+if os.name == 'nt':
+    binaries.append((mip_path+'/libraries/win64/*', 'mip/libraries/win64'))
+else:
+    binaries.append((mip_path+'/libraries/lin64/*', 'mip/libraries/lin64/'))
+
+binaries.append((mip_path+'/libraries/cbc-c-darwin-x86-64.dylib', 'mip/libraries'))
 
 a = Analysis(['scripts/main.py'],
              pathex=['/home/pauli/PycharmProjects/pySprida'],
-             binaries=[('/home/pauli/.conda/envs/pySprida/lib/python3.8/site-packages/mip/libraries/win64/*', 'mip/libraries/win64'), ('/home/pauli/.conda/envs/pySprida/lib/python3.8/site-packages/mip/libraries/lin64/*', 'mip/libraries/lin64/'), ('/home/pauli/.conda/envs/pySprida/lib/python3.8/site-packages/mip/libraries/cbc-c-darwin-x86-64.dylib', 'mip/libraries')],
+             binaries=binaries,
              datas=[],
              hiddenimports=[],
              hookspath=[],

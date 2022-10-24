@@ -26,16 +26,7 @@ jobs:
     - name: PyInstaller
       run: |
         python -m PyInstaller -y \
-          --add-binary \
-          "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/mip/libraries/lin64/*:mip/libraries/lin64/" \
-          --add-binary \
-          "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/mip/libraries/cbc-c-darwin-x86-64.dylib:mip/libraries" \
           ./scripts/main.py
 
     - name: LS
       run: ls dist
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: linux
-        path: dist
