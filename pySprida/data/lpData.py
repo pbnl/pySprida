@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from typing import Dict
 
 from pySprida.data.dataContainer import DataContainer
 import numpy as np
@@ -74,6 +75,16 @@ class LPData:
     def get_unadjusted_preferences(self):
         preferences = self._data_container.updated_pref.reshape(-1)
         return preferences
+
+    def get_num_groups_per_type(self) -> Dict[str, int]:
+        counters = {}
+        for group in self._data_container.groups:
+            if group.group_type.name in counters:
+                counters[group.group_type.name] += 1
+            else:
+                counters[group.group_type.name] = 1
+        assert len(counters) == len(self._data_container.group_types)
+        return counters
 
 
 if __name__ == "__main__":

@@ -12,15 +12,15 @@ from pySprida.data.solution import Solution
 
 
 class ColoredMappingTableModel(QtCore.QAbstractTableModel):
-    def __init__(self, solution: Solution, data_container: DataContainer):
+    def __init__(self, data_container: DataContainer):
         super(ColoredMappingTableModel, self).__init__()
         self.data_container = data_container
-        self._mapping = solution.get_mapping_matrix()
+        self._mapping = data_container.last_solution.get_mapping_matrix()
         self._preferences = self.data_container.updated_pref
         self._teacher_names = data_container.get_teacher_names()
         self._group_names = data_container.get_group_names()
         self._subject_names = data_container.get_subject_names()
-        self._num_lessons = solution.get_teacher_num_lessons()
+        self._num_lessons = data_container.last_solution.get_teacher_num_lessons()
         self._co_ref = data_container.get_teacher_co_ref()
 
     def update_pref(self, row, col, pref):
@@ -206,11 +206,11 @@ class ColoredMappingTableView(QTableView):
 
 
 class SolutionWindow(QMainWindow):
-    def __init__(self, solution, dataContainer):
+    def __init__(self, dataContainer):
         super().__init__()
 
         self.table = ColoredMappingTableView(dataContainer)
-        self.model = ColoredMappingTableModel(solution, dataContainer)
+        self.model = ColoredMappingTableModel(dataContainer)
         self.table.setModel(self.model)
         self.table.ajust_size()
 

@@ -3,8 +3,11 @@ from pathlib import Path
 import logging
 from typing import List
 import numpy as np
+from mip import OptimizationStatus
+
 from pySprida.data.group import Group
 from pySprida.data.groupType import GroupType
+from pySprida.data.solution import Solution
 from pySprida.data.subject import Subject
 from pySprida.data.subjectType import SubjectType
 from pySprida.data.teacher import Teacher
@@ -19,6 +22,7 @@ class DataContainer:
         self.group_types: List[GroupType] = []
         self.groups: List[Group] = []
         self.teachers: List[Teacher] = []
+        self.last_solution: Solution = None
 
     @property
     def subjects(self):
@@ -45,6 +49,12 @@ class DataContainer:
             self.updated_pref = np.array(self._data["updated_preferences"])
         else:
             self.updated_pref = self.get_preference_matrix()
+
+        if "last_solution" in self._data:
+            self.last_solution = Solution(np.array(self._data["last_solution"]["solution"]), self,
+                                          self._data["last_solution"]["loss"],
+                                          OptimizationStatus(self._data["last_solution"]["status"]),
+                                          self._data["last_solution"]["relaxed_loss"])
 
     def load_subject_types(self, config):
         subs = config["subjects"]
@@ -141,6 +151,20 @@ class DataContainer:
         self.solver_config = param["solver"]
         # TODO: Support other solvers
 
+    def get_lessons_per_subject(self):
+        lessons = []
+        for group in self.groups:
+            type = group.group_type
+            for subject in type.existing_noneexisting_subjects:
+                if subject is None:
+                    lessons.append(0)
+                else:
+                    lessons.append(subject.num_lessons)
+        lessons = np.array(lessons).reshape(self.num_groups, self.num_subjects)
+        lessons = np.transpose(lessons)
+        lessons = lessons.reshape(-1)
+        return lessons
+
     def to_json(self):
         data = {"config": {}}
         data["config"]["groupTypes"] = [gtype.name for gtype in self.group_types]
@@ -187,6 +211,11 @@ class DataContainer:
             teachers.append(tdata)
         data["teachers"] = teachers
         data["updated_preferences"] = self.updated_pref.tolist()
+        if self.last_solution:
+            data["last_solution"] = {"solution": self.last_solution.solution_data.tolist(),
+                                     "loss": self.last_solution.loss,
+                                     "status": self.last_solution.status.value,
+                                     "relaxed_loss": self.last_solution.relaxed_loss}
         return data
 
 

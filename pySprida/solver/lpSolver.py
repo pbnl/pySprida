@@ -153,8 +153,7 @@ class LPSolver(Solver):
             print(f"solution: {status}")
 
         sol = np.array([v.x for v in self.m.vars[:lessons_bound_start_idx]])
-        return Solution(sol, self.data_container, self.problem,
-                        log=self.m.search_progress_log,
+        return Solution(sol, self.data_container,
                         loss=self.m.objective_value,
                         status=status,
                         relaxed_loss=self.m.objective_bound)
