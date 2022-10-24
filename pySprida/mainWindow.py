@@ -43,11 +43,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.export_solution_button.clicked.connect(self.export_solution)
 
         self.container = None
-        self.solution = None
+        self.ui.view_solution.setDisabled(True)
+        self.ui.view_solution.clicked.connect(self.show_solution)
         # self.load_debug_data()
 
     def export_solution(self):
-        if self.solution is None:
+        if self.container.last_solution is None:
             info_ok_box("Generate a solution first")
             return
         name = QFileDialog.getSaveFileName(
@@ -97,6 +98,8 @@ class MainWindow(QtWidgets.QMainWindow):
         except (IsADirectoryError, FileNotFoundError):
             info_ok_box(f"File {str(path)} was not found!")
         self.load_preview_data()
+        if self.container.last_solution:
+            self.ui.view_solution.setDisabled(False)
 
     def load_preview_data(self):
         self.ui.teacher_list.clear()
@@ -117,7 +120,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if solver == "LP":
             problem = LPData(self.container)
             self.solver = LPSolver(problem, self.container)
-            self.solver.finished.connect(self.show_solution)
+            self.solver.finished.connect(self.update_solution)
             self.solver.start()
             self.ui.generate_button.setText("Working")
             self.ui.generate_button.setDisabled(True)
@@ -126,7 +129,16 @@ class MainWindow(QtWidgets.QMainWindow):
             info_ok_box(f"No solver with the name: {str(solver)}")
             raise Exception("Wrong solver")
 
-    def show_solution(self, solution):
+    def update_solution(self, solution):
+        self.container.last_solution = solution
+        if solution.status == OptimizationStatus.FEASIBLE or solution.status == OptimizationStatus.OPTIMAL:
+            self.ui.view_solution.setDisabled(False)
+            self.show_solution()
+        else:
+            self.ui.view_solution.setDisabled(True)
+
+    def show_solution(self):
+        solution = self.container.last_solution
         self.ui.generate_button.setText("Generate")
         self.ui.generate_button.setDisabled(False)
         self.ui.status.setText("Finished")
@@ -139,8 +151,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.loss_progress.setValue(solution.loss)
             self.ui.solution_value.setText(str(solution.loss))
         if solution.status == OptimizationStatus.FEASIBLE or solution.status == OptimizationStatus.OPTIMAL:
-            self.solution = solution
-            self.solution_window = SolutionWindow(solution, self.container)
+            self.solution_window = SolutionWindow(self.container)
             self.solution_window.show()
         else:
             self.ui.ub_value.setText("-")

@@ -9,18 +9,19 @@ from PyQt5.QtWidgets import QTableView, QDesktopWidget, QStyledItemDelegate, QSt
 
 from pySprida.data.dataContainer import DataContainer
 from pySprida.data.solution import Solution
+from pySprida.gui.teacherSolutionWindow import TeacherSolutionWindow
 
 
 class ColoredMappingTableModel(QtCore.QAbstractTableModel):
-    def __init__(self, solution: Solution, data_container: DataContainer):
+    def __init__(self, data_container: DataContainer):
         super(ColoredMappingTableModel, self).__init__()
         self.data_container = data_container
-        self._mapping = solution.get_mapping_matrix()
+        self._mapping = data_container.last_solution.get_mapping_matrix()
         self._preferences = self.data_container.updated_pref
         self._teacher_names = data_container.get_teacher_names()
         self._group_names = data_container.get_group_names()
         self._subject_names = data_container.get_subject_names()
-        self._num_lessons = solution.get_teacher_num_lessons()
+        self._num_lessons = data_container.last_solution.get_teacher_num_lessons()
         self._co_ref = data_container.get_teacher_co_ref()
 
     def update_pref(self, row, col, pref):
@@ -47,6 +48,8 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                     return "X"
             return ""
         if role == Qt.BackgroundRole:
+            if index.row() == 0:
+                return QtGui.QColor("#ffffff")
             second_col = ((index.column() - 1) // len(self._group_names)) % 2
             if index.row() == 1:
                 if second_col:
@@ -92,6 +95,7 @@ class ColoredMappingTableModel(QtCore.QAbstractTableModel):
                         return QtGui.QColor("#6fcf3c")
                     else:
                         return QtGui.QColor("#89ff4a")
+                pass
 
     def rowCount(self, index):
         # The length of the outer list.
@@ -158,6 +162,8 @@ class ColoredMappingTableView(QTableView):
 
         self.setItemDelegate(StyleDelegateForQTableWidget(self))
 
+        self.verticalHeader().sectionDoubleClicked.connect(self.handleVerticalHeaderDoubleClick)
+
         self.keys = [Qt.Key_1,
                      Qt.Key_2,
                      Qt.Key_3,
@@ -166,6 +172,11 @@ class ColoredMappingTableView(QTableView):
                      Qt.Key_R,
                      Qt.Key_N,
                      Qt.Key_Y]
+
+    def handleVerticalHeaderDoubleClick(self, index) -> None:
+        if index > 0:
+            self.teacher_solution_window = TeacherSolutionWindow(self._data_container, index - 2)
+            self.teacher_solution_window.show()
 
     def ajust_size(self):
         self.setRowHeight(0, 1)
@@ -206,11 +217,11 @@ class ColoredMappingTableView(QTableView):
 
 
 class SolutionWindow(QMainWindow):
-    def __init__(self, solution, dataContainer):
+    def __init__(self, dataContainer):
         super().__init__()
 
         self.table = ColoredMappingTableView(dataContainer)
-        self.model = ColoredMappingTableModel(solution, dataContainer)
+        self.model = ColoredMappingTableModel(dataContainer)
         self.table.setModel(self.model)
         self.table.ajust_size()
 
@@ -230,7 +241,7 @@ if __name__ == "__main__":
     printer = ConsolePrinter()
 
     container = DataContainer()
-    container.load_data(Path("./testData/testProblem.json"))
+    container.load_data(Path("/home/pauli/test_plan.json"))
     printer.printTeachers(container)
     printer.printGroups(container)
 

@@ -1,25 +1,22 @@
 import mip
 
-from pySprida.data.dataContainer import DataContainer
 import numpy as np
 
 
 class Solution:
 
     def __init__(self, solution_data,
-                 data_container: DataContainer,
-                 problem,
-                 log,
+                 data_container,
                  loss,
                  status,
-                 relaxed_loss):
+                 relaxed_loss,
+                 selected_groups):
         self.solution_data = solution_data
         self._data_container = data_container
-        self.problem = problem
-        self.log = log
         self.loss = loss
         self.status = status
         self.relaxed_loss = relaxed_loss
+        self.selected_groups = selected_groups
 
     def get_mapping_matrix(self):
         num_teacher = self._data_container.num_teacher
@@ -32,10 +29,10 @@ class Solution:
 
     def get_teacher_num_lessons(self):
         num_lessons = []
-        numTeacher = self.problem.get_num_teche()
-        numGroups = self.problem.get_num_groups()
-        numSubjects = self.problem.get_num_subjects()
-        lessons = self.problem.get_lessons_per_subject()
+        numTeacher = self._data_container.num_teacher
+        numGroups = self._data_container.num_groups
+        numSubjects = self._data_container.num_subjects
+        lessons = self._data_container.get_lessons_per_subject()
         for i in range(numTeacher):
             num_lessons.append(sum([self.solution_data[i * numGroups * numSubjects + j] * lessons[j]
                                     for j in range(numGroups * numSubjects)]))
@@ -55,3 +52,7 @@ class Solution:
             return "No integer feasible solution was found: Maybe I need more time"
         else:
             return "Error"
+
+    def getSelectedGroups(self, teacher_id: int):
+        numGroups = self._data_container.num_groups
+        return self.selected_groups[teacher_id * numGroups: teacher_id * numGroups + numGroups].tolist()
