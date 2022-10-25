@@ -57,7 +57,6 @@ class Solution:
         else:
             return "Error"
 
-
     def getSelectedGroups(self, teacher_id: int):
         numGroups = self._data_container.num_groups
         return self.selected_groups[teacher_id *
