@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
 jobs:
   buildLin:
     runs-on: ubuntu-latest
@@ -76,7 +78,7 @@ jobs:
         with:
           draft: true
           prerelease: true
-          release_name: New version
+          release_name: Release ${{ github.ref }}
           tag_name: ${{ github.ref }}
           artifacts: "pysprida_win_build.zip,pysprida_linux_build.zip"
           artifactContentType: application/zip
