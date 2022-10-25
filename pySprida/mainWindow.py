@@ -46,7 +46,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.container = None
         self.ui.view_solution.setDisabled(True)
-        self.ui.view_solution.clicked.connect(self.show_solution)
+        self.ui.view_solution.clicked.connect(self.show_solution_window)
         # self.load_debug_data()
 
     def export_solution(self):
@@ -107,7 +107,7 @@ class MainWindow(QtWidgets.QMainWindow):
             info_ok_box(f"File {str(path)} was not found!")
         self.load_preview_data()
         if self.container.last_solution:
-            self.ui.view_solution.setDisabled(False)
+            self.update_solution(self.container.last_solution)
 
     def load_preview_data(self):
         self.ui.teacher_list.clear()
@@ -138,19 +138,11 @@ class MainWindow(QtWidgets.QMainWindow):
             raise Exception("Wrong solver")
 
     def update_solution(self, solution):
-        self.container.last_solution = solution
-        if solution.status == OptimizationStatus.FEASIBLE or solution.status == OptimizationStatus.OPTIMAL:
-            self.ui.view_solution.setDisabled(False)
-            self.show_solution()
-        else:
-            self.ui.view_solution.setDisabled(True)
-
-    def show_solution(self):
-        solution = self.container.last_solution
         self.ui.generate_button.setText("Generate")
         self.ui.generate_button.setDisabled(False)
         self.ui.status.setText("Finished")
         self.ui.solution_type.setText(solution.status_name)
+        self.container.last_solution = solution
 
         if solution.relaxed_loss:
             self.ui.loss_progress.setMaximum(solution.relaxed_loss)
@@ -158,13 +150,20 @@ class MainWindow(QtWidgets.QMainWindow):
         if solution.loss:
             self.ui.loss_progress.setValue(solution.loss)
             self.ui.solution_value.setText(str(solution.loss))
-        if solution.status == OptimizationStatus.FEASIBLE or solution.status == OptimizationStatus.OPTIMAL:
-            self.solution_window = SolutionWindow(self.container)
-            self.solution_window.show()
-        else:
+        if solution.status != OptimizationStatus.FEASIBLE and solution.status != OptimizationStatus.OPTIMAL:
             self.ui.ub_value.setText("-")
             self.ui.solution_value.setText("-")
             self.ui.loss_progress.setValue(0)
+
+        self.ui.view_solution.setDisabled(False)
+
+    def show_solution_window(self):
+        if self.solution_window:
+            if self.solution_window.isVisible():
+                self.solution_window.update()
+                return
+        self.solution_window = SolutionWindow(self.container)
+        self.solution_window.show()
 
     def set_solver_status(self):
         print("Test")

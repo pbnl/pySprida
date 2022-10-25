@@ -39,8 +39,5 @@ class Ui_TeacherSolution(object):
 
     def retranslateUi(self, TeacherSolution):
         _translate = QtCore.QCoreApplication.translate
-        TeacherSolution.setWindowTitle(
-            _translate(
-                "TeacherSolution",
-                "Teacher Solution"))
+        TeacherSolution.setWindowTitle(_translate("TeacherSolution", "Teacher Solution"))
         self.label.setText(_translate("TeacherSolution", "Selected Groups"))
