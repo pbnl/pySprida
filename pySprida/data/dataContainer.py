@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 import logging
-from typing import List
+from typing import List, Dict
 import numpy as np
 from mip import OptimizationStatus
 
@@ -132,6 +132,10 @@ class DataContainer:
     def num_groups(self):
         return len(self.groups)
 
+    @property
+    def group_type_names(self):
+        return [gtype.name for gtype in self.group_types]
+
     def get_preference_matrix(self):
         preferences = np.zeros((self.num_teacher, self.num_cources))
         for i, teacher in enumerate(self.teachers):
@@ -171,6 +175,16 @@ class DataContainer:
         lessons = np.transpose(lessons)
         lessons = lessons.reshape(-1)
         return lessons
+
+    def get_num_groups_per_type(self) -> Dict[str, int]:
+        counters = {}
+        for group in self.groups:
+            if group.group_type.name in counters:
+                counters[group.group_type.name] += 1
+            else:
+                counters[group.group_type.name] = 1
+        assert len(counters) == len(self.group_types)
+        return counters
 
     def to_json(self):
         data = {"config": {}}

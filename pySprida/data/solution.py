@@ -1,6 +1,7 @@
 import mip
 
 import numpy as np
+from mip import OptimizationStatus
 
 
 class Solution:
@@ -28,10 +29,14 @@ class Solution:
         return matrix
 
     def get_teacher_num_lessons(self):
+
         num_lessons = []
         numTeacher = self._data_container.num_teacher
         numGroups = self._data_container.num_groups
         numSubjects = self._data_container.num_subjects
+        if self.status != OptimizationStatus.FEASIBLE and self.status != OptimizationStatus.OPTIMAL:
+            return np.zeros((numTeacher))
+
         lessons = self._data_container.get_lessons_per_subject()
         for i in range(numTeacher):
             num_lessons.append(sum([self.solution_data[i *
