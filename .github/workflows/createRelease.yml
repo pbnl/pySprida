@@ -58,10 +58,18 @@ jobs:
         with:
           name: linux_build
           path: builds/linux_build
+      - uses: vimtor/action-zip@v1
+        with:
+          files: builds/linux_build
+          dest: pysprida_linux_build.zip
       - uses: actions/download-artifact@master
         with:
           name: win_build
           path: builds/win_build
+      - uses: vimtor/action-zip@v1
+        with:
+          files: builds/win_build
+          dest: pysprida_win_build.zip
       - name: release
         uses: actions/create-release@v1
         id: create_release
@@ -70,6 +78,7 @@ jobs:
           prerelease: true
           release_name: New version
           tag_name: ${{ github.ref }}
-          artifacts: "builds/*"
+          artifacts: "pysprida_win_build.zip,pysprida_linux_build.zip"
+          artifactContentType: application/zip
         env:
           GITHUB_TOKEN: ${{ github.token }}
