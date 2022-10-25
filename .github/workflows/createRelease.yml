@@ -70,6 +70,5 @@ jobs:
           prerelease: true
           release_name: New version
           tag_name: ${{ github.ref }}
-          body_path: CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ github.token }}
