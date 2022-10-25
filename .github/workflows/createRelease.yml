@@ -1,0 +1,29 @@
+name: Create release
+on:
+  push:
+    branches:
+      - master
+jobs:
+  release:
+    needs: [buildLin, buildWin]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: linux_build
+          path: builds/linux_build
+      - uses: actions/download-artifact@master
+        with:
+          name: win_build
+          path: builds/win_build
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: true
+          prerelease: true
+          release_name: New version
+          tag_name: ${{ github.ref }}
+          body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

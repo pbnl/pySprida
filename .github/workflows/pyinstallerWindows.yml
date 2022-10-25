@@ -1,0 +1,32 @@
+name: PyInstallerWindows
+
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  buildWin:
+    needs: autopep8
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+
+    - name: Install Dependencies
+      run: pip install -r requirements.txt
+
+    - name: Install pyinstaller
+      run: pip install pyinstaller
+
+    - name: Pyinstaller
+      run: python -m PyInstaller ./main.spec
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: win_build
+        path: dist

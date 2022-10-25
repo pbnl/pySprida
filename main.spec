@@ -2,19 +2,20 @@
 
 block_cipher = None
 import mip
-from os.path import dirname
-pathmip = dirname(mip.__file__)
-mippathlib = os.path.join(pathmip, "libraries")
+mip_path = mip.__path__[0]
+print(mip.__path__)
 
-a = Analysis(['scripts/main.py'],
-             pathex=['pySprida'],
-             binaries=[
-             (f"{mippathlib}/win64/*",
-              'mip/libraries/win64'),
-              (f"{mippathlib}/lin64/*",
-               'mip/libraries/lin64/'),
-               (f"{mippathlib}/*",
-                'mip/libraries')],
+import os
+binaries = []
+if os.path.isdir(mip_path+'/libraries/win64'):
+    binaries.append((mip_path+'/libraries/win64/*', 'mip/libraries/win64'))
+if os.path.isdir(mip_path+'/libraries/lin64'):
+    binaries.append((mip_path+'/libraries/lin64/*', 'mip/libraries/lin64'))
+binaries.append((mip_path+'/libraries/*', 'mip/libraries'))
+
+a = Analysis(['main.py'],
+             pathex=[],
+             binaries=binaries,
              datas=[],
              hiddenimports=[],
              hookspath=[],
@@ -43,4 +44,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='pySprida')
+               name='main')
