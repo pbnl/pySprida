@@ -38,9 +38,12 @@ class Ui_LPSolverEdit(object):
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setGeometry(QtCore.QRect(350, 10, 151, 18))
         self.label_4.setObjectName("label_4")
-        self.max_different_groups_per_groupType = QtWidgets.QTableWidget(self.centralwidget)
-        self.max_different_groups_per_groupType.setGeometry(QtCore.QRect(350, 30, 191, 41))
-        self.max_different_groups_per_groupType.setObjectName("max_different_groups_per_groupType")
+        self.max_different_groups_per_groupType = QtWidgets.QTableWidget(
+            self.centralwidget)
+        self.max_different_groups_per_groupType.setGeometry(
+            QtCore.QRect(350, 30, 191, 41))
+        self.max_different_groups_per_groupType.setObjectName(
+            "max_different_groups_per_groupType")
         self.max_different_groups_per_groupType.setColumnCount(0)
         self.max_different_groups_per_groupType.setRowCount(0)
         LPSolverEdit.setCentralWidget(self.centralwidget)
@@ -57,8 +60,20 @@ class Ui_LPSolverEdit(object):
 
     def retranslateUi(self, LPSolverEdit):
         _translate = QtCore.QCoreApplication.translate
-        LPSolverEdit.setWindowTitle(_translate("LPSolverEdit", "LP Solver Edit"))
+        LPSolverEdit.setWindowTitle(
+            _translate(
+                "LPSolverEdit",
+                "LP Solver Edit"))
         self.label.setText(_translate("LPSolverEdit", "Max time (sec)"))
-        self.label_2.setText(_translate("LPSolverEdit", "Equal lessons weight"))
-        self.label_3.setText(_translate("LPSolverEdit", "Equal subjects weight"))
-        self.label_4.setText(_translate("LPSolverEdit", "Maximal different groups"))
+        self.label_2.setText(
+            _translate(
+                "LPSolverEdit",
+                "Equal lessons weight"))
+        self.label_3.setText(
+            _translate(
+                "LPSolverEdit",
+                "Equal subjects weight"))
+        self.label_4.setText(
+            _translate(
+                "LPSolverEdit",
+                "Maximal different groups"))
