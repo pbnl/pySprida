@@ -7,9 +7,8 @@ on:
 
 
 jobs:
-  needs: autopep8
   buildWin:
-
+    needs: autopep8
     runs-on: windows-latest
 
     steps:

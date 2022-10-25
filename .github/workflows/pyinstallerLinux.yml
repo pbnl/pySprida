@@ -7,9 +7,8 @@ on:
 
 
 jobs:
-  needs: autopep8
   buildLin:
-
+    needs: autopep8
     runs-on: ubuntu-latest
 
     steps:
