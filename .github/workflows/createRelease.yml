@@ -1,8 +1,6 @@
 name: Create release
 on:
   push:
-    branches:
-      - master
     tags:
       - 'v*'
 jobs:
@@ -78,8 +76,7 @@ jobs:
         with:
           draft: true
           prerelease: true
-          release_name: Release ${{ github.ref }}
-          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref }}
           artifacts: "pysprida_win_build.zip,pysprida_linux_build.zip"
           artifactContentType: application/zip
         env:
