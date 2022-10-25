@@ -39,7 +39,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.container = None
         self.solution_window = None
         self.ui.view_solution.setDisabled(True)
-        self.ui.view_solution.clicked.connect(self.show_solution)
+        self.ui.view_solution.clicked.connect(self.show_solution_window)
         # self.load_debug_data()
 
     def export_solution(self):
@@ -99,7 +99,9 @@ class MainWindow(QtWidgets.QMainWindow):
         except (IsADirectoryError, FileNotFoundError):
             info_ok_box(f"File {str(path)} was not found!")
         self.load_preview_data()
+        self.ui.view_solution.setDisabled(True)
         if self.container.last_solution:
+            self.update_solution_preview()
             self.ui.view_solution.setDisabled(False)
 
     def load_preview_data(self):
@@ -130,8 +132,8 @@ class MainWindow(QtWidgets.QMainWindow):
             info_ok_box(f"No solver with the name: {str(solver)}")
             raise Exception("Wrong solver")
 
-    def update_solution(self, solution):
-        self.container.last_solution = solution
+    def update_solution_preview(self):
+        solution = self.container.last_solution
         self.ui.generate_button.setText("Generate")
         self.ui.generate_button.setDisabled(False)
         self.ui.status.setText("Finished")
@@ -143,20 +145,18 @@ class MainWindow(QtWidgets.QMainWindow):
         if solution.loss:
             self.ui.loss_progress.setValue(solution.loss)
             self.ui.solution_value.setText(str(solution.loss))
-        if solution.status == OptimizationStatus.FEASIBLE or solution.status == OptimizationStatus.OPTIMAL:
-            self.show_solution()
-        else:
+        if solution.status != OptimizationStatus.FEASIBLE and solution.status != OptimizationStatus.OPTIMAL:
             self.ui.ub_value.setText("-")
             self.ui.solution_value.setText("-")
             self.ui.loss_progress.setValue(0)
+
+    def update_solution(self, solution):
+        self.container.last_solution = solution
+        self.update_solution_preview()
+        self.show_solution_window()
         self.ui.view_solution.setDisabled(False)
 
-    def show_solution(self):
-        solution = self.container.last_solution
-        if self.solution_window:
-            if self.solution_window.isVisible():
-                self.solution_window.update()
-                return None
+    def show_solution_window(self):
         self.solution_window = SolutionWindow(self.container)
         self.solution_window.show()
 
