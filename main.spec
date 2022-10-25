@@ -7,12 +7,9 @@ print(mip.__path__)
 
 import os
 binaries = []
-if os.name == 'nt':
-    binaries.append((mip_path+'/libraries/win64/*', 'mip/libraries/win64'))
-else:
-    binaries.append((mip_path+'/libraries/lin64/*', 'mip/libraries/lin64/'))
 
-binaries.append((mip_path+'/libraries/cbc-c-darwin-x86-64.dylib', 'mip/libraries'))
+binaries.append((mip_path+'/libraries/win64/*', 'mip/libraries/win64'))
+binaries.append((mip_path+'/libraries/*', 'mip/libraries'))
 
 a = Analysis(['main.py'],
              pathex=[],
