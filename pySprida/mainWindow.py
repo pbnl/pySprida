@@ -37,6 +37,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.export_solution_button.clicked.connect(self.export_solution)
 
         self.container = None
+        self.solution_window = None
         self.ui.view_solution.setDisabled(True)
         self.ui.view_solution.clicked.connect(self.show_solution)
         # self.load_debug_data()
@@ -152,6 +153,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def show_solution(self):
         solution = self.container.last_solution
+        if self.solution_window:
+            if self.solution_window.isVisible():
+                self.solution_window.update()
+                return None
         self.solution_window = SolutionWindow(self.container)
         self.solution_window.show()
 

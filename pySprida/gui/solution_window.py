@@ -240,6 +240,10 @@ class SolutionWindow(QMainWindow):
         self.adjustSize()
         self.setWindowTitle("PySprida-Solution")
 
+    def update(self) -> None:
+        super().update()
+        self.table.update()
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
