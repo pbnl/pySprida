@@ -7,8 +7,10 @@ print(mip.__path__)
 
 import os
 binaries = []
-
-binaries.append((mip_path+'/libraries/win64/*', 'mip/libraries/win64'))
+if os.path.isdir(mip_path+'/libraries/win64'):
+    binaries.append((mip_path+'/libraries/win64/*', 'mip/libraries/win64'))
+if os.path.isdir(mip_path+'/libraries/lin64'):
+    binaries.append((mip_path+'/libraries/lin64/*', 'mip/libraries/lin64'))
 binaries.append((mip_path+'/libraries/*', 'mip/libraries'))
 
 a = Analysis(['main.py'],

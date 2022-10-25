@@ -1,5 +1,5 @@
 texttable
-mip
+mip==1.12.0
 pandas
 pyqt5
 numpy
