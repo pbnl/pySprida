@@ -20,9 +20,12 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(10, 10, 81, 18))
         self.label.setObjectName("label")
-        self.config_path_select_button = QtWidgets.QPushButton(self.centralwidget)
-        self.config_path_select_button.setGeometry(QtCore.QRect(420, 30, 121, 34))
-        self.config_path_select_button.setObjectName("config_path_select_button")
+        self.config_path_select_button = QtWidgets.QPushButton(
+            self.centralwidget)
+        self.config_path_select_button.setGeometry(
+            QtCore.QRect(420, 30, 121, 34))
+        self.config_path_select_button.setObjectName(
+            "config_path_select_button")
         self.config_path = QtWidgets.QLineEdit(self.centralwidget)
         self.config_path.setGeometry(QtCore.QRect(10, 30, 401, 32))
         self.config_path.setObjectName("config_path")
@@ -95,7 +98,8 @@ class Ui_MainWindow(object):
         self.save_problem_button.setGeometry(QtCore.QRect(10, 400, 101, 34))
         self.save_problem_button.setObjectName("save_problem_button")
         self.export_solution_button = QtWidgets.QPushButton(self.centralwidget)
-        self.export_solution_button.setGeometry(QtCore.QRect(120, 400, 111, 34))
+        self.export_solution_button.setGeometry(
+            QtCore.QRect(120, 400, 111, 34))
         self.export_solution_button.setObjectName("export_solution_button")
         self.view_solution = QtWidgets.QPushButton(self.centralwidget)
         self.view_solution.setGeometry(QtCore.QRect(240, 400, 84, 34))
@@ -116,7 +120,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "pySprida"))
         self.label.setText(_translate("MainWindow", "Config File"))
-        self.config_path_select_button.setText(_translate("MainWindow", "Browse"))
+        self.config_path_select_button.setText(
+            _translate("MainWindow", "Browse"))
         self.load_config_button.setText(_translate("MainWindow", "Load"))
         self.generate_button.setText(_translate("MainWindow", "Generate"))
         self.solver_selector.setItemText(0, _translate("MainWindow", "LP"))
@@ -133,7 +138,10 @@ class Ui_MainWindow(object):
         self.label_7.setText(_translate("MainWindow", "Teacher"))
         self.label_8.setText(_translate("MainWindow", "Subjects"))
         self.label_9.setText(_translate("MainWindow", "Groups"))
-        self.solver_edit_button.setText(_translate("MainWindow", "Edit Solver"))
-        self.save_problem_button.setText(_translate("MainWindow", "Save problem"))
-        self.export_solution_button.setText(_translate("MainWindow", "Export solution "))
+        self.solver_edit_button.setText(
+            _translate("MainWindow", "Edit Solver"))
+        self.save_problem_button.setText(
+            _translate("MainWindow", "Save problem"))
+        self.export_solution_button.setText(
+            _translate("MainWindow", "Export solution "))
         self.view_solution.setText(_translate("MainWindow", "View"))
