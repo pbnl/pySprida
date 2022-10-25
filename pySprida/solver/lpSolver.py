@@ -53,7 +53,9 @@ class LPSolver(Solver):
         for i in range(numTeacher):
             group_counter = 0
             for group_name, num_groups_of_type in num_groups_per_type.items():
-                max_groups_per_grouptype = self.config.get("max_groups_per_groupType", {}).get(group_name, num_groups_per_type[group_name])
+                max_groups_per_grouptype = self.config.get(
+                    "max_groups_per_groupType", {}).get(
+                    group_name, num_groups_per_type[group_name])
                 if max_groups_per_grouptype != num_groups_per_type[group_name]:
                     self.m += mip.xsum([
                         y[group_restriction_start_idx +
