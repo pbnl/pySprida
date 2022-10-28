@@ -53,16 +53,21 @@ class Ui_LPSolverEdit(object):
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setObjectName("label_4")
         self.verticalLayout.addWidget(self.label_4)
-        self.max_different_groups_per_groupType = QtWidgets.QTableWidget(self.centralwidget)
-        self.max_different_groups_per_groupType.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.max_different_groups_per_groupType.setObjectName("max_different_groups_per_groupType")
+        self.max_different_groups_per_groupType = QtWidgets.QTableWidget(
+            self.centralwidget)
+        self.max_different_groups_per_groupType.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.max_different_groups_per_groupType.setObjectName(
+            "max_different_groups_per_groupType")
         self.max_different_groups_per_groupType.setColumnCount(0)
         self.max_different_groups_per_groupType.setRowCount(0)
         self.verticalLayout.addWidget(self.max_different_groups_per_groupType)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.horizontalLayout.setStretch(0, 1)
         self.horizontalLayout.setStretch(1, 1)
@@ -82,8 +87,20 @@ class Ui_LPSolverEdit(object):
 
     def retranslateUi(self, LPSolverEdit):
         _translate = QtCore.QCoreApplication.translate
-        LPSolverEdit.setWindowTitle(_translate("LPSolverEdit", "LP Solver Edit"))
+        LPSolverEdit.setWindowTitle(
+            _translate(
+                "LPSolverEdit",
+                "LP Solver Edit"))
         self.label.setText(_translate("LPSolverEdit", "Max time (sec)"))
-        self.label_2.setText(_translate("LPSolverEdit", "Equal lessons weight"))
-        self.label_3.setText(_translate("LPSolverEdit", "Equal subjects weight"))
-        self.label_4.setText(_translate("LPSolverEdit", "Maximal different groups"))
+        self.label_2.setText(
+            _translate(
+                "LPSolverEdit",
+                "Equal lessons weight"))
+        self.label_3.setText(
+            _translate(
+                "LPSolverEdit",
+                "Equal subjects weight"))
+        self.label_4.setText(
+            _translate(
+                "LPSolverEdit",
+                "Maximal different groups"))

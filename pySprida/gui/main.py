@@ -34,13 +34,16 @@ class Ui_MainWindow(object):
         self.config_path = QtWidgets.QLineEdit(self.centralwidget)
         self.config_path.setObjectName("config_path")
         self.horizontalLayout_3.addWidget(self.config_path)
-        self.config_path_select_button = QtWidgets.QPushButton(self.centralwidget)
-        self.config_path_select_button.setObjectName("config_path_select_button")
+        self.config_path_select_button = QtWidgets.QPushButton(
+            self.centralwidget)
+        self.config_path_select_button.setObjectName(
+            "config_path_select_button")
         self.horizontalLayout_3.addWidget(self.config_path_select_button)
         self.load_config_button = QtWidgets.QPushButton(self.centralwidget)
         self.load_config_button.setObjectName("load_config_button")
         self.horizontalLayout_3.addWidget(self.load_config_button)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
         self.verticalLayout_5.addLayout(self.horizontalLayout_3)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -96,10 +99,12 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_4.addWidget(self.pushButton)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem1)
         self.verticalLayout_10.addLayout(self.horizontalLayout_4)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_10.addItem(spacerItem2)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
@@ -114,7 +119,8 @@ class Ui_MainWindow(object):
         self.view_solution = QtWidgets.QPushButton(self.centralwidget)
         self.view_solution.setObjectName("view_solution")
         self.horizontalLayout_5.addWidget(self.view_solution)
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem3)
         self.verticalLayout_6.addLayout(self.horizontalLayout_5)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
@@ -156,7 +162,8 @@ class Ui_MainWindow(object):
         self.ub_value.setObjectName("ub_value")
         self.verticalLayout_8.addWidget(self.ub_value)
         self.horizontalLayout_7.addLayout(self.verticalLayout_8)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_7.addItem(spacerItem4)
         self.verticalLayout_7.addLayout(self.horizontalLayout_7)
         self.loss_progress = QtWidgets.QProgressBar(self.centralwidget)
@@ -187,17 +194,21 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "pySprida"))
         self.label.setText(_translate("MainWindow", "Config File"))
-        self.config_path_select_button.setText(_translate("MainWindow", "Browse"))
+        self.config_path_select_button.setText(
+            _translate("MainWindow", "Browse"))
         self.load_config_button.setText(_translate("MainWindow", "Load"))
         self.solver_selector.setItemText(0, _translate("MainWindow", "LP"))
         self.label_2.setText(_translate("MainWindow", "Solver"))
         self.label_7.setText(_translate("MainWindow", "Teacher"))
         self.label_8.setText(_translate("MainWindow", "Subjects"))
         self.label_9.setText(_translate("MainWindow", "Groups"))
-        self.solver_edit_button.setText(_translate("MainWindow", "Edit Solver"))
+        self.solver_edit_button.setText(
+            _translate("MainWindow", "Edit Solver"))
         self.pushButton.setText(_translate("MainWindow", "Edit Teachers"))
-        self.save_problem_button.setText(_translate("MainWindow", "Save problem"))
-        self.export_solution_button.setText(_translate("MainWindow", "Export solution "))
+        self.save_problem_button.setText(
+            _translate("MainWindow", "Save problem"))
+        self.export_solution_button.setText(
+            _translate("MainWindow", "Export solution "))
         self.view_solution.setText(_translate("MainWindow", "View"))
         self.generate_button.setText(_translate("MainWindow", "Generate"))
         self.label_3.setText(_translate("MainWindow", "Status:"))

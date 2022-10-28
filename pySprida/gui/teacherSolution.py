@@ -25,12 +25,14 @@ class Ui_TeacherSolution(object):
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.selected_groups = QtWidgets.QTableWidget(self.centralwidget)
-        self.selected_groups.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.selected_groups.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.selected_groups.setObjectName("selected_groups")
         self.selected_groups.setColumnCount(0)
         self.selected_groups.setRowCount(0)
         self.verticalLayout.addWidget(self.selected_groups)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
         TeacherSolution.setCentralWidget(self.centralwidget)
@@ -47,5 +49,8 @@ class Ui_TeacherSolution(object):
 
     def retranslateUi(self, TeacherSolution):
         _translate = QtCore.QCoreApplication.translate
-        TeacherSolution.setWindowTitle(_translate("TeacherSolution", "Teacher Solution"))
+        TeacherSolution.setWindowTitle(
+            _translate(
+                "TeacherSolution",
+                "Teacher Solution"))
         self.label.setText(_translate("TeacherSolution", "Selected Groups"))
