@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>607</width>
+    <width>777</width>
     <height>186</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,2,0">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,3,0">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -112,7 +112,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>607</width>
+     <width>777</width>
      <height>30</height>
     </rect>
    </property>

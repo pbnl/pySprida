@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_LPSolverEdit(object):
     def setupUi(self, LPSolverEdit):
         LPSolverEdit.setObjectName("LPSolverEdit")
-        LPSolverEdit.resize(607, 186)
+        LPSolverEdit.resize(777, 186)
         self.centralwidget = QtWidgets.QWidget(LPSolverEdit)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -71,11 +71,11 @@ class Ui_LPSolverEdit(object):
         self.horizontalLayout.addItem(spacerItem1)
         self.horizontalLayout.setStretch(0, 1)
         self.horizontalLayout.setStretch(1, 1)
-        self.horizontalLayout.setStretch(2, 2)
+        self.horizontalLayout.setStretch(2, 3)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         LPSolverEdit.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(LPSolverEdit)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 607, 30))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 777, 30))
         self.menubar.setObjectName("menubar")
         LPSolverEdit.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(LPSolverEdit)
