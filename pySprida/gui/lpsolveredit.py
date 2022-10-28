@@ -14,41 +14,63 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_LPSolverEdit(object):
     def setupUi(self, LPSolverEdit):
         LPSolverEdit.setObjectName("LPSolverEdit")
-        LPSolverEdit.resize(696, 188)
+        LPSolverEdit.resize(607, 186)
         self.centralwidget = QtWidgets.QWidget(LPSolverEdit)
         self.centralwidget.setObjectName("centralwidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setObjectName("gridLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(30, 10, 91, 18))
         self.label.setObjectName("label")
+        self.verticalLayout_2.addWidget(self.label)
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(30, 50, 131, 18))
         self.label_2.setObjectName("label_2")
+        self.verticalLayout_2.addWidget(self.label_2)
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(30, 90, 141, 18))
         self.label_3.setObjectName("label_3")
+        self.verticalLayout_2.addWidget(self.label_3)
+        self.horizontalLayout_2.addLayout(self.verticalLayout_2)
+        self.horizontalLayout.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.max_time = QtWidgets.QLineEdit(self.centralwidget)
-        self.max_time.setGeometry(QtCore.QRect(190, 10, 113, 32))
         self.max_time.setObjectName("max_time")
+        self.verticalLayout_3.addWidget(self.max_time)
         self.equal_lesson_weight = QtWidgets.QLineEdit(self.centralwidget)
-        self.equal_lesson_weight.setGeometry(QtCore.QRect(190, 50, 113, 32))
         self.equal_lesson_weight.setObjectName("equal_lesson_weight")
+        self.verticalLayout_3.addWidget(self.equal_lesson_weight)
         self.equal_subject_weight = QtWidgets.QLineEdit(self.centralwidget)
-        self.equal_subject_weight.setGeometry(QtCore.QRect(190, 90, 113, 32))
         self.equal_subject_weight.setObjectName("equal_subject_weight")
+        self.verticalLayout_3.addWidget(self.equal_subject_weight)
+        self.horizontalLayout.addLayout(self.verticalLayout_3)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(350, 10, 151, 18))
         self.label_4.setObjectName("label_4")
-        self.max_different_groups_per_groupType = QtWidgets.QTableWidget(
-            self.centralwidget)
-        self.max_different_groups_per_groupType.setGeometry(
-            QtCore.QRect(350, 30, 191, 41))
-        self.max_different_groups_per_groupType.setObjectName(
-            "max_different_groups_per_groupType")
+        self.verticalLayout.addWidget(self.label_4)
+        self.max_different_groups_per_groupType = QtWidgets.QTableWidget(self.centralwidget)
+        self.max_different_groups_per_groupType.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.max_different_groups_per_groupType.setObjectName("max_different_groups_per_groupType")
         self.max_different_groups_per_groupType.setColumnCount(0)
         self.max_different_groups_per_groupType.setRowCount(0)
+        self.verticalLayout.addWidget(self.max_different_groups_per_groupType)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
+        self.horizontalLayout.addLayout(self.verticalLayout)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
+        self.horizontalLayout.setStretch(2, 2)
+        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         LPSolverEdit.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(LPSolverEdit)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 696, 30))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 607, 30))
         self.menubar.setObjectName("menubar")
         LPSolverEdit.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(LPSolverEdit)
@@ -60,20 +82,8 @@ class Ui_LPSolverEdit(object):
 
     def retranslateUi(self, LPSolverEdit):
         _translate = QtCore.QCoreApplication.translate
-        LPSolverEdit.setWindowTitle(
-            _translate(
-                "LPSolverEdit",
-                "LP Solver Edit"))
+        LPSolverEdit.setWindowTitle(_translate("LPSolverEdit", "LP Solver Edit"))
         self.label.setText(_translate("LPSolverEdit", "Max time (sec)"))
-        self.label_2.setText(
-            _translate(
-                "LPSolverEdit",
-                "Equal lessons weight"))
-        self.label_3.setText(
-            _translate(
-                "LPSolverEdit",
-                "Equal subjects weight"))
-        self.label_4.setText(
-            _translate(
-                "LPSolverEdit",
-                "Maximal different groups"))
+        self.label_2.setText(_translate("LPSolverEdit", "Equal lessons weight"))
+        self.label_3.setText(_translate("LPSolverEdit", "Equal subjects weight"))
+        self.label_4.setText(_translate("LPSolverEdit", "Maximal different groups"))
