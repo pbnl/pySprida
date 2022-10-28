@@ -43,6 +43,9 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.load_debug_data()
 
     def export_solution(self):
+        if not self.container:
+            info_ok_box("Load a config first")
+            return
         if self.container.last_solution is None:
             info_ok_box("Generate a solution first")
             return
@@ -51,9 +54,11 @@ class MainWindow(QtWidgets.QMainWindow):
             'Save File',
             "/home/pauli/Dokumente/Pfadfinder/Schulung_neu/Schulungen/21/Stunde- und Raumplan/erste Pläne vom 12.04/",
             "*.xlsx")[0]
+        if name == "":
+            return
         workbook = xlsxwriter.Workbook(name)
         worksheet = workbook.add_worksheet()
-        mapping_matrix = self.solution.get_mapping_matrix()
+        mapping_matrix = self.container.last_solution.get_mapping_matrix()
         subject_names = self.container.get_subject_names()
         gtypes_names = self.container.get_group_names()
         for i, sub_name in enumerate(subject_names):
