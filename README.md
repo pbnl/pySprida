@@ -24,3 +24,10 @@ You can update the code by navigating to the repository root and execute `git pu
 Execute `python -m pip install -r ./requirements.txt` in the project root to install the dependencies.
 ## How to use
 After you have activated the correct environment execute `python main.py` in the project root.
+
+
+##Known issues
+
+###Problems on systems with wayland (new ubuntu versions)
+Problem: `could not load the qt platform plugin xcb in even though it was found`
+Possible fix: `export QT_QPA_PLATFORM=wayland`
