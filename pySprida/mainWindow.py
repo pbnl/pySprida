@@ -146,10 +146,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if solution.relaxed_loss:
             self.ui.loss_progress.setMaximum(
-                int(solution.relaxed_loss.item()))
+                int(solution.relaxed_loss))
             self.ui.ub_value.setText(str(solution.relaxed_loss))
         if solution.loss:
-            self.ui.loss_progress.setValue(int(solution.lossl.item()))
+            self.ui.loss_progress.setValue(int(solution.loss))
             self.ui.solution_value.setText(str(solution.loss))
         if solution.status != OptimizationStatus.FEASIBLE and solution.status != OptimizationStatus.OPTIMAL:
             self.ui.ub_value.setText("-")
