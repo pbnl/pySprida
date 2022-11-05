@@ -26,8 +26,8 @@ Execute `python -m pip install -r ./requirements.txt` in the project root to ins
 After you have activated the correct environment execute `python main.py` in the project root.
 
 
-##Known issues
+## Known issues
 
-###Problems on systems with wayland (new ubuntu versions)
+### Problems on systems with wayland (new ubuntu versions)
 Problem: `could not load the qt platform plugin xcb in even though it was found`
 Possible fix: `export QT_QPA_PLATFORM=wayland`
