@@ -146,7 +146,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if solution.relaxed_loss:
             self.ui.loss_progress.setMaximum(
-                int(solution.relaxed_lossl.item()))
+                int(solution.relaxed_loss.item()))
             self.ui.ub_value.setText(str(solution.relaxed_loss))
         if solution.loss:
             self.ui.loss_progress.setValue(int(solution.lossl.item()))
