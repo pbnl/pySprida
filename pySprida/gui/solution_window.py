@@ -142,9 +142,9 @@ class StyleDelegateForQTableWidget(QStyledItemDelegate):
     @staticmethod
     def combineColors(c1, c2):
         c3 = QColor()
-        c3.setRed((c1.red() + c2.red()) / 2)
-        c3.setGreen((c1.green() + c2.green()) / 2)
-        c3.setBlue((c1.blue() + c2.blue()) / 2)
+        c3.setRed(int((c1.red() + c2.red()) / 2))
+        c3.setGreen(int((c1.green() + c2.green()) / 2))
+        c3.setBlue(int((c1.blue() + c2.blue()) / 2))
 
         return c3
 
